@@ -11,6 +11,7 @@ function Fortune(props) {
       //   justifyContent: "space-between",
       //   padding: "150px",
       // }}
+      // m_padding="25px 0px"
     >
       <Image dimensions="350px" image={props.img} />
       <div className="destination_container" style={{ width: "450px" }}>
@@ -21,18 +22,19 @@ function Fortune(props) {
           height="32px"
           color=" #D0D6F9"
           width="400px"
+          m_width="350px"
         >
           {props.description}
         </Body>
         <hr style={{borderWidth: .25}} />
         <StatsContainer>
           <div>
-            <Body width="auto" padding="28px 0px 12px 0px">AVG. DISTANCE</Body>
-            <Heading size="28px">{props.distance}</Heading>
+            <Body  width="auto" padding="28px 0px 12px 0px">AVG. DISTANCE</Body>
+            <Heading size="28px" m_size="28px">{props.distance}</Heading>
           </div>
           <div>
             <Body width="auto" padding="28px 0px 12px 0px">EST. TRAVEL TIME</Body>
-            <Heading size="28px">{props.time}</Heading>
+            <Heading size="28px" m_size="28px">{props.time}</Heading>
           </div>
         </StatsContainer>
       </div>

@@ -23,6 +23,9 @@ const Heading = styled.h1`
     text-align: center;
     width: 100%;
   }
+  @media (max-width: 490px){
+    font-size: ${({ m_size }) => (m_size ? m_size : "56px")}; 
+  }
 `;
 
 const Body = styled.p`
@@ -43,6 +46,10 @@ const Body = styled.p`
     text-align: ${({ tablet_align }) =>
       tablet_align ? tablet_align : "center"};
     width: ${({ tablet_width }) => (tablet_width ? tablet_width : "100%")};
+    font-size: 15px
+  };
+  @media (max-width: 490px){
+    width: ${({m_width}) => m_width ? m_width : "auto"}
   }
 `;
 
@@ -90,11 +97,13 @@ const FlexContainer = styled.div`
   @media (max-width: 1190px) {
     flex-direction: column;
     justify-content: center;
-    position: fixed;
-    padding: 100px 0px;
+    /* position: fixed; */
+    padding: ${({m_padding}) => m_padding ? m_padding : "0px"};
     width: 100%;
     margin: 0px auto;
-    display: block
+    display: block;
+    
+   
   }
 `;
 
@@ -110,6 +119,10 @@ const Image = styled.div`
     margin: 0 auto;
     display: ${({display}) => display  ? display : "block" };
     margin-bottom: 24px
+  }
+  @media (max-width: 490px){
+    width: 250px;
+    height: 250px
   }
 `;
 
@@ -151,6 +164,13 @@ const NavIcons = styled.img`
  
 `
 
+const Container = styled.div`
+  margin-top: ${({top}) => top ? top : "150px"};
+  @media (max-width: 490px){
+    margin-top: 0px
+  }
+`
+
 export {
   Wrapper,
   Heading,
@@ -162,5 +182,6 @@ export {
   Image,
   StatsContainer,
   TabletImage,
-  NavIcons
+  NavIcons,
+  Container
 };
