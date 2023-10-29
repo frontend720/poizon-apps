@@ -10,14 +10,15 @@ import Navbar from "./Navbar";
 function App() {
   return (
     <>
-    <Navbar />
+      <Navbar />
       <Routes>
-        <Route path="/home" element={<Home />} />
-        <Route path="/destinations" element={<Destination />} />
-        <Route path="/crew" element={<Crew />} />
-        <Route path="/technology" element={<Technology />} />
+        
+          <Route index path="/" element={<Home />} />
+          <Route path="/destinations" element={<Destination />} />
+          <Route path="/crew" element={<Crew />} />
+          <Route path="/technology" element={<Technology />} />
+        
       </Routes>
-
     </>
   );
 }

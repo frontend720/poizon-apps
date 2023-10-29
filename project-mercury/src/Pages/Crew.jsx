@@ -52,7 +52,7 @@ export default function Crew() {
 
   return (
     <Wrapper image={backgroundImage}>
-      <CrewComp name={crew[3].name} bio={crew[3].bio} image={crew[3].images.png}/>
+      <CrewComp name={crew[0].name} bio={crew[0].bio} image={crew[0].images.png}/>
     </Wrapper>
   )
 }

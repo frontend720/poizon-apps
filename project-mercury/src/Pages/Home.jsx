@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import React from "react";
-import { Wrapper, Heading, Body, Button } from "../StyleSheet";
+import { Wrapper, Heading, Body, Button, FlexContainer } from "../StyleSheet";
 import earth from "../assets/home/background-home-desktop.jpg";
 import { Link } from "react-router-dom";
 // import Navbar from "../Navbar";
@@ -8,18 +8,16 @@ import { Link } from "react-router-dom";
 export default function Home() {
   return (
     <Wrapper image={earth} padding="165px">
-        {/* <Navbar /> */}
-      <div
-        style={{
-          position: "absolute",
-          width: "80%",
-          bottom: 0,
-          marginBottom: 125,
-        }}
+      {/* <Navbar /> */}
+      <FlexContainer
+        justify="space-between"
+        width= "100%"
+        top="60px"
       >
-        <div style={{ display: "flex", justifyContent: "space-between" }}>
+        {/* <div style={{ display: "flex", justifyContent: "space-between" }}> */}
+        
           <div>
-            <Body opacity=".75" size="28px" spacing="4.75px">
+            <Body opacity=".75" size="28px" spacing="4.75px" width="auto">
               SO, YOU WANT TO TRAVEL TO
             </Body>
             <Heading margin="24px 0px">Space</Heading>
@@ -36,21 +34,22 @@ export default function Home() {
               this world experience!
             </Body>
           </div>
+          {/* </div> */}
           <Button style={{ marginTop: 60 }}>
             <Body
               spacing="2px"
               transform="uppercase"
               size="32px"
               color="#000000"
+              width="auto"
             >
-                <Link to="/destinations" style={{color: "#000000"}}>
-                
-              Explore
-                </Link>
+              <Link to="/destinations" style={{ color: "#000000" }}>
+                Explore
+              </Link>
             </Body>
           </Button>
-        </div>
-      </div>
+        
+      </FlexContainer>
     </Wrapper>
   );
 }

@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 const Wrapper = styled.div`
-  width: 100%;
+  width: 100vw;
   height: 100vh;
   background: ${({ color }) => (color ? color : "#ffffff")};
   padding: ${({ padding }) => (padding ? padding : "16px")};
@@ -19,6 +19,10 @@ const Heading = styled.h1`
   color: ${({ color }) => (color ? color : "#ffffff")};
   text-transform: uppercase;
   margin: ${({ margin }) => (margin ? margin : "auto")};
+  @media (max-width: 1190px) {
+    text-align: center;
+    width: 100%;
+  }
 `;
 
 const Body = styled.p`
@@ -30,7 +34,16 @@ const Body = styled.p`
   font-style: normal;
   opacity: ${({ opacity }) => (opacity ? opacity : 1)};
   text-transform: ${({ transform }) => (transform ? transform : "capitalize")};
-  padding: ${({padding})=>padding?padding:0}
+  padding: ${({ padding }) => (padding ? padding : 0)};
+  width: ${({ width }) => (width ? width : 0)};
+  @media (max-width: 1190px) {
+    /* text-align: center; */
+    margin: 0px auto;
+    width: 600px;
+    text-align: ${({ tablet_align }) =>
+      tablet_align ? tablet_align : "center"};
+    width: ${({ tablet_width }) => (tablet_width ? tablet_width : "100%")};
+  }
 `;
 
 const Button = styled.button`
@@ -48,37 +61,106 @@ const Nav = styled.ul`
   background: rgba(255, 255, 255, 0.04);
   backdrop-filter: blur(40.774227142333984px);
   right: 0;
-  margin-top: 70px
- 
+  margin-top: 70px;
+  @media (max-width: 685px){
+    flex-direction: column;
+    margin-top: 0px;
+    height: 100vh;
+    line-height: 58px;
+    padding-top: 150px;
+    display: ${({view}) => view ? view : "none"}
+  }
 `;
 const NavLink = styled.li`
   color: #ffffff;
   list-style: none;
   text-transform: uppercase;
   padding: 0px 25px;
-  letter-spacing: 2px
+  letter-spacing: 2px;
 `;
 
 const FlexContainer = styled.div`
-    display: flex
-`
+  display: flex;
+  padding: ${({ padding }) => (padding ? padding : "0px")};
+  justify-content: ${({ justify }) => (justify ? justify : "flex-start")};
+  position: static;
+  width: ${({width}) => width ? width : "100vw"};
+  margin-top: ${({top}) => top ? top : "0px"};
+  flex-direction: row;
+  @media (max-width: 1190px) {
+    flex-direction: column;
+    justify-content: center;
+    position: fixed;
+    padding: 100px 0px;
+    width: 100%;
+    margin: 0px auto;
+    display: block
+  }
+`;
 
 const Image = styled.div`
-background-image: url(${({ image }) => (image ? image : "none")});
-/* width: ${({width}) => width ? width : "50%"}; */
-/* height: 250px; */
-background-size: cover;
-background-repeat: no-repeat;
-background-position: center;
-height: ${({dimensions}) => dimensions ? dimensions : "250px"};
-width: ${({dimensions}) => dimensions ? dimensions : "250px"};
-border: none !important
-`
+  background-image: url(${({ image }) => (image ? image : "none")});
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  height: ${({ dimensions }) => (dimensions ? dimensions : "250px")};
+  width: ${({ dimensions }) => (dimensions ? dimensions : "250px")};
+  border: none !important;
+  @media (max-width: 1190px) {
+    margin: 0 auto;
+    display: ${({display}) => display  ? display : "block" };
+    margin-bottom: 24px
+  }
+`;
+
+const TabletImage = styled.div`
+  display: none;
+  @media (max-width: 1190px) {
+    margin: ${({margin}) => margin ? margin : "0px auto"};
+    background-image: url(${({ image }) => (image ? image : "none")});
+    width: 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    display: block;
+    padding: ${({padding}) => padding ? padding : 0}
+  }
+`;
 
 const StatsContainer = styled.div`
-display: flex;
-justify-content: space-between;
-width: 75%
+  display: flex;
+  justify-content: space-between;
+  width: 75%;
+  @media (max-width: 1190px) {
+    margin: 0 auto;
+  }
+`;
+
+const NavIcons = styled.img`
+  src: url(${({icon}) => icon ? icon : "none"});
+  width: 24px;
+  position: absolute;
+  right: 0;
+ margin-right: 30px;
+ display: none;
+ @media (max-width: 680px){
+   display: ${({display}) => display ? display : "block"};
+   z-index: 3;
+    margin-top: ${({top}) => top ? top : 30}
+ };
+ 
 `
 
-export { Wrapper, Heading, Body, Button, Nav, NavLink, FlexContainer, Image, StatsContainer };
+export {
+  Wrapper,
+  Heading,
+  Body,
+  Button,
+  Nav,
+  NavLink,
+  FlexContainer,
+  Image,
+  StatsContainer,
+  TabletImage,
+  NavIcons
+};
