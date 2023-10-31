@@ -1,5 +1,6 @@
 import styled from "styled-components";
 
+
 const Wrapper = styled.div`
   width: 100vw;
   height: 100vh;
@@ -25,6 +26,7 @@ const Heading = styled.h1`
   }
   @media (max-width: 490px){
     font-size: ${({ m_size }) => (m_size ? m_size : "56px")}; 
+    
   }
 `;
 
@@ -49,7 +51,8 @@ const Body = styled.p`
     font-size: 15px
   };
   @media (max-width: 490px){
-    width: ${({m_width}) => m_width ? m_width : "auto"}
+    width: ${({m_width}) => m_width ? m_width : "100%"};
+    margin: 0px;
   }
 `;
 

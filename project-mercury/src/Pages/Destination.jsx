@@ -58,13 +58,13 @@ export default function Destination() {
 
   return (
     <Wrapper position="fixed" image={backgroundImage}>
-      <div style={{ marginTop: 150 }}>
+      <div style={{ marginTop: 100 }}>
         <Fortune
-          name={destinations[1].name}
-          img={destinations[1].images.png}
-          description={destinations[1].description}
-          distance={destinations[1].distance}
-          time={destinations[1].travel}
+          name={destinations[2].name}
+          img={destinations[2].images.png}
+          description={destinations[2].description}
+          distance={destinations[2].distance}
+          time={destinations[2].travel}
         />
       </div>
     </Wrapper>
