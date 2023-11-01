@@ -15,6 +15,21 @@ const EditContainer = styled.div`
     padding: 5px;
     display: flex;
     justify-content: space-between;
+    background: ${({color})=> color ? color : "#44444425"}
 `
 
-export {List, ListItem, EditContainer}
+const Button = styled.button`
+    border: ${({border}) => border ? border : "2px solid #444444"};
+    background: ${({background}) => background ? background : "#444444"};
+    padding: 6px;
+    width: ${({width}) => width ? width : "50%"}
+`
+
+const ButtonText = styled.label`
+    font-weight: ${({weight}) => weight ? weight : "600"};
+    font-size: ${({size}) => size ? size : "16px"};
+    color: ${({color}) => color ? color : "#444444"};
+    text-transform: ${({transform}) => transform ? transform : "Capitalize"}
+`
+
+export {List, ListItem, EditContainer, Button, ButtonText}

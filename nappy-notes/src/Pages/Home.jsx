@@ -7,10 +7,11 @@ import {
   get,
   remove,
   update,
+  push,
 } from "firebase/database";
 import { app } from "../config";
 import { MDBTextArea, MDBInput, MDBBtn, MDBCard } from "mdb-react-ui-kit";
-import { List, ListItem } from "../StyleSheet";
+import { List, ListItem, Button, ButtonText } from "../StyleSheet";
 import moment from "moment";
 
 import { v4 as uuid } from "uuid";
@@ -25,36 +26,34 @@ function Home() {
   const [defaultText, setDefaultText] = useState("No notes to display");
   const [updateId, setUpdateId] = useState();
 
-  const [stupid, setStupid] = useState()
+  const [stupid, setStupid] = useState();
 
   const [listStyle, setListStyle] = useState(false);
 
-  const username = "doccnasty";
+  const username = "frontend720";
 
   const [data, setData] = useState([]);
 
   const [tester, setTester] = useState();
 
+
   const newNote = (e) => {
     e.preventDefault();
-    const doodleId = setNoteId(uuid());
     const noteRef = set(ref(db, `${username}/${uuid()}`), {
       title,
       note,
-      id: noteId,
+      id: uuid(),
       timestamp: moment().format("LLL"),
     });
-    const docId = ref(db, `${username}/${noteId}`);
-
     noteRef.then((data) => {
       console.log(data);
       setTitle("");
       setNote("");
       setTrigger((prev) => !prev);
-      setNoteId(null);
-      setUpdateId(docId.key);
     });
   };
+
+
 
   function getNotes() {
     const dbRef = ref(getDatabase());
@@ -68,6 +67,7 @@ function Home() {
           newNotes.push(note.val());
           const data = note.val();
           setNoteId(note.val().id);
+          //   setCollectionId(null)
         }
       });
       setData(newNotes);
@@ -80,23 +80,26 @@ function Home() {
 
   async function deleteNote(e) {
     e.preventDefault();
-    const docId = ref(db, `${username}/${noteId}`);
-    const collId = docId.key
-    const noteRef = ref(db, `${username}/${collId}`);
-    setStupid(collId)
+    const noteRef = ref(db, `${username}/${tester}`);
+    // setStupid(collId)
     remove(noteRef).then((data) => {
-      console.log(data);
+      if (!data) {
+        return;
+      } else {
+        console.log(data);
+      }
 
       setTrigger((prev) => !prev);
+
+      setUpdateId(null);
     });
   }
-  console.log(updateId);
+  console.log(tester);
 
   useEffect(() => {
     getNotes();
+    // deleteNote()
   }, [trigger]);
-
-  console.log(stupid)
 
   return (
     <div>
@@ -138,9 +141,13 @@ function Home() {
               />
             </div>
             <div style={{ margin: "6px 0px" }}>
-              <MDBBtn className="w-50" rounded type="submit" color="success">
+              {/* <MDBBtn className="w-50" rounded type="submit" color="success">
                 New Note
-              </MDBBtn>
+                
+              </MDBBtn> */}
+              <Button background="none">
+                <ButtonText>New Note</ButtonText>
+              </Button>
             </div>
           </div>
         </form>
@@ -169,7 +176,7 @@ function Home() {
                       {point.title}
                     </label>
                     <hr />{" "}
-                    <label style={{ fontSize: 12, fontWeight: 400 }} htmlFor="">
+                    <label style={{ fontSize: 12, fontWeight: 400, textTransform: "none" }} htmlFor="">
                       {point.note}
                     </label>
                   </p>
