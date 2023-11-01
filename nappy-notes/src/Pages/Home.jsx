@@ -37,12 +37,16 @@ function Home() {
   const [tester, setTester] = useState();
 
 
+  const [testThisNoteId, setTestThisNoteId] = useState(uuid())
+
+
   const newNote = (e) => {
     e.preventDefault();
-    const noteRef = set(ref(db, `${username}/${uuid()}`), {
+    setTestThisNoteId(uuid())
+    const noteRef = set(ref(db, `${username}/${testThisNoteId}`), {
       title,
       note,
-      id: uuid(),
+      id: testThisNoteId,
       timestamp: moment().format("LLL"),
     });
     noteRef.then((data) => {
@@ -50,6 +54,7 @@ function Home() {
       setTitle("");
       setNote("");
       setTrigger((prev) => !prev);
+    //   setTestThisNoteId()
     });
   };
 
@@ -80,9 +85,11 @@ function Home() {
 
   async function deleteNote(e) {
     e.preventDefault();
+
     const noteRef = ref(db, `${username}/${tester}`);
     // setStupid(collId)
     remove(noteRef).then((data) => {
+      //   console.log(collId);
       if (!data) {
         return;
       } else {
