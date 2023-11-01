@@ -10,4 +10,11 @@ const ListItem = styled.li`
 
 `
 
-export {List, ListItem}
+const EditContainer = styled.div`
+    border: .15px solid #44444450;
+    padding: 5px;
+    display: flex;
+    justify-content: space-between;
+`
+
+export {List, ListItem, EditContainer}

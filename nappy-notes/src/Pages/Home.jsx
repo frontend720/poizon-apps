@@ -1,14 +1,21 @@
 import React, { useState, useEffect } from "react";
-import { getDatabase, ref, set, child, get } from "firebase/database";
+import {
+  getDatabase,
+  ref,
+  set,
+  child,
+  get,
+  remove,
+  update,
+} from "firebase/database";
 import { app } from "../config";
 import { MDBTextArea, MDBInput, MDBBtn, MDBCard } from "mdb-react-ui-kit";
 import { List, ListItem } from "../StyleSheet";
 import moment from "moment";
 
 import { v4 as uuid } from "uuid";
+import EditNoteCard from "../Components/EditNoteCard";
 function Home() {
-  console.log(app);
-
   const db = getDatabase(app);
 
   const [noteId, setNoteId] = useState(uuid());
@@ -16,6 +23,9 @@ function Home() {
   const [note, setNote] = useState("");
   const [trigger, setTrigger] = useState(false);
   const [defaultText, setDefaultText] = useState("No notes to display");
+  const [updateId, setUpdateId] = useState();
+
+  const [stupid, setStupid] = useState()
 
   const [listStyle, setListStyle] = useState(false);
 
@@ -23,19 +33,26 @@ function Home() {
 
   const [data, setData] = useState([]);
 
+  const [tester, setTester] = useState();
+
   const newNote = (e) => {
     e.preventDefault();
+    const doodleId = setNoteId(uuid());
     const noteRef = set(ref(db, `${username}/${uuid()}`), {
       title,
       note,
-      id: uuid(),
+      id: noteId,
       timestamp: moment().format("LLL"),
     });
+    const docId = ref(db, `${username}/${noteId}`);
+
     noteRef.then((data) => {
       console.log(data);
       setTitle("");
       setNote("");
       setTrigger((prev) => !prev);
+      setNoteId(null);
+      setUpdateId(docId.key);
     });
   };
 
@@ -43,13 +60,17 @@ function Home() {
     const dbRef = ref(getDatabase());
     const getCollection = get(child(dbRef, `${username}/`));
     getCollection.then((coll) => {
+      const newNotes = [];
       coll.forEach((note) => {
         if (!note.exists) {
           setDefaultText();
         } else {
-          setData((prevData) => [...prevData, note.val()]);
+          newNotes.push(note.val());
+          const data = note.val();
+          setNoteId(note.val().id);
         }
       });
+      setData(newNotes);
     });
   }
 
@@ -57,9 +78,25 @@ function Home() {
     setListStyle((prev) => !prev);
   };
 
+  async function deleteNote(e) {
+    e.preventDefault();
+    const docId = ref(db, `${username}/${noteId}`);
+    const collId = docId.key
+    const noteRef = ref(db, `${username}/${collId}`);
+    setStupid(collId)
+    remove(noteRef).then((data) => {
+      console.log(data);
+
+      setTrigger((prev) => !prev);
+    });
+  }
+  console.log(updateId);
+
   useEffect(() => {
     getNotes();
   }, [trigger]);
+
+  console.log(stupid)
 
   return (
     <div>
@@ -137,12 +174,12 @@ function Home() {
                     </label>
                   </p>
                   <small style={{ fontSize: 10 }}>{point.timestamp}</small>
+                  <EditNoteCard del={deleteNote} />
                 </ListItem>
               </List>
             )
           )}
         </div>
-        
       </div>
     </div>
   );
