@@ -12,18 +12,18 @@ export default function Header({ title }) {
     e.preventDefault();
     signOut(auth).then((user) => {
         console.log(user)
-        setSignout(user.uid)
+        setSignout(user)
     });
     // console.log(auth);
   };
 
-  console.log(signout)
+//   console.log(signout)
 
   return (
     <Head>
       <div style={{ display: "flex" }}>
         <HeaderText>{title}</HeaderText>
-        <Button onClick={logout} background="#00000000" width="5%" height="50%">
+        <Button display={signout !== undefined ? "none" : ""} onClick={logout} background="#00000000" width="5%" height="50%">
           <ButtonText>Logout</ButtonText>
         </Button>
       </div>

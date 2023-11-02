@@ -23,7 +23,7 @@ export default function Authentication() {
   const [password, setPassword] = useState("");
   const [phoneNumber, setPhoneNumber] = useState();
   const [verificationCode, setVerificationCode] = useState("");
-  const [authToggle, setAuthToggle] = useState(false)
+  const [authToggle, setAuthToggle] = useState(true)
 
   const newUser = (e) => {
     e.preventDefault();
@@ -53,8 +53,11 @@ export default function Authentication() {
             console.log("something went wrong")
         } else {
             console.log(user)
-            console.log(user.email)
+            // console.log(user.email)
+            console.log("click")
         }
+    }).catch((error) => {
+        console.log(error)
     })
   }
 
@@ -66,7 +69,7 @@ export default function Authentication() {
   return (
     <Wrapper>
       <Header title="Authentication" />
-      <Form onSubmit={newUser} action="" color="#44444475">
+      <Form onSubmit={authToggle ? returningUser : newUser} action="" color="#44444475">
         <Input
           type="text"
           name="email"
@@ -87,10 +90,10 @@ export default function Authentication() {
         />
         <Button style={{ marginLeft: 8 }} width=" 15%" type="submit">
           <ButtonText  color="#e8e8e8" transform="uppercase">
-            {authToggle ? "Create User" : "Login"}
+            {authToggle ? "Login" : "Signup"}
           </ButtonText>
         </Button>
-        <p onClick={toggleSwitch}>{!authToggle ? "Sign up" : "Login"}</p>
+        <p onClick={toggleSwitch}>{authToggle ? "Signup" : "Login"}</p>
       </Form>
     </Wrapper>
   );

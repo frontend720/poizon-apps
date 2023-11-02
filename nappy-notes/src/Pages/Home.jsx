@@ -34,11 +34,11 @@ function Home() {
     onAuthStateChanged(auth, (user) => {
       setAuthToken(user.uid);
     });
-  });
+  },[]);
 
   const emailStr = JSON.stringify(authToken);
 
-  console.log(emailStr);
+
 
   const db = getDatabase(app);
 
@@ -119,6 +119,12 @@ function Home() {
   }
   // console.log(tester);
 
+  // console.log(username)
+
+  setTimeout(() => {
+    getNotes()
+  }, 500)
+
   useEffect(() => {
     getNotes();
     // deleteNote()
@@ -191,6 +197,7 @@ function Home() {
                     htmlFor=""
                   >
                     {point.note}
+                    
                   </label>
                 </p>
                 <small style={{ fontSize: 10 }}>{point.timestamp}</small>
