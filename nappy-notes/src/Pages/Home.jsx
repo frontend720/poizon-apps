@@ -11,12 +11,35 @@ import {
 } from "firebase/database";
 import { app } from "../config";
 import { MDBTextArea, MDBInput, MDBBtn, MDBCard } from "mdb-react-ui-kit";
-import { List, ListItem, Button, ButtonText } from "../StyleSheet";
+import {
+  List,
+  ListItem,
+  Button,
+  ButtonText,
+  HeaderText,
+  Head,
+  Wrapper,
+} from "../StyleSheet";
 import moment from "moment";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 import { v4 as uuid } from "uuid";
 import EditNoteCard from "../Components/EditNoteCard";
+import Header from "../Components/Header";
 function Home() {
+  const auth = getAuth(app);
+  const [authToken, setAuthToken] = useState();
+
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      setAuthToken(user.uid);
+    });
+  });
+
+  const emailStr = JSON.stringify(authToken);
+
+  console.log(emailStr);
+
   const db = getDatabase(app);
 
   const [noteId, setNoteId] = useState(uuid());
@@ -36,14 +59,12 @@ function Home() {
 
   const [tester, setTester] = useState();
 
-
-  const [testThisNoteId, setTestThisNoteId] = useState(uuid())
-
+  const [testThisNoteId, setTestThisNoteId] = useState(uuid());
 
   const newNote = (e) => {
     e.preventDefault();
-    setTestThisNoteId(uuid())
-    const noteRef = set(ref(db, `${username}/${testThisNoteId}`), {
+    setTestThisNoteId(uuid());
+    const noteRef = set(ref(db, `${authToken}/${testThisNoteId}`), {
       title,
       note,
       id: testThisNoteId,
@@ -54,15 +75,12 @@ function Home() {
       setTitle("");
       setNote("");
       setTrigger((prev) => !prev);
-    //   setTestThisNoteId()
     });
   };
 
-
-
   function getNotes() {
     const dbRef = ref(getDatabase());
-    const getCollection = get(child(dbRef, `${username}/`));
+    const getCollection = get(child(dbRef, `${authToken}/`));
     getCollection.then((coll) => {
       const newNotes = [];
       coll.forEach((note) => {
@@ -72,7 +90,6 @@ function Home() {
           newNotes.push(note.val());
           const data = note.val();
           setNoteId(note.val().id);
-          //   setCollectionId(null)
         }
       });
       setData(newNotes);
@@ -87,9 +104,8 @@ function Home() {
     e.preventDefault();
 
     const noteRef = ref(db, `${username}/${tester}`);
-    // setStupid(collId)
+
     remove(noteRef).then((data) => {
-      //   console.log(collId);
       if (!data) {
         return;
       } else {
@@ -101,7 +117,7 @@ function Home() {
       setUpdateId(null);
     });
   }
-  console.log(tester);
+  // console.log(tester);
 
   useEffect(() => {
     getNotes();
@@ -109,16 +125,8 @@ function Home() {
   }, [trigger]);
 
   return (
-    <div>
-      <div style={{ background: "#44444475", width: "100%" }}>
-        <h1
-          className="app_title"
-          style={{ padding: 24, textTransform: "uppercase" }}
-        >
-          Nappy Notes
-        </h1>
-        <hr />
-      </div>
+    <Wrapper>
+      <Header title="Nappy Notes" />
       <div className="note_container">
         <form onSubmit={newNote} action="">
           <div
@@ -148,10 +156,6 @@ function Home() {
               />
             </div>
             <div style={{ margin: "6px 0px" }}>
-              {/* <MDBBtn className="w-50" rounded type="submit" color="success">
-                New Note
-                
-              </MDBBtn> */}
               <Button background="none">
                 <ButtonText>New Note</ButtonText>
               </Button>
@@ -170,32 +174,33 @@ function Home() {
           >
             {!listStyle ? "Add bullets" : "Remove bullets"}
           </label>
-          {data.map((point) =>
-            point.title && point.note === "" ? (
-              <>
-                <h1>{defaultText}</h1>
-              </>
-            ) : (
-              <List type={listStyle ? "disc" : "none"} key={point.id}>
-                <ListItem border=".5px solid #00000050">
-                  <p style={{ fontWeight: 600, lineHeight: -2 }}>
-                    <label htmlFor="" className="note_title">
-                      {point.title}
-                    </label>
-                    <hr />{" "}
-                    <label style={{ fontSize: 12, fontWeight: 400, textTransform: "none" }} htmlFor="">
-                      {point.note}
-                    </label>
-                  </p>
-                  <small style={{ fontSize: 10 }}>{point.timestamp}</small>
-                  <EditNoteCard del={deleteNote} />
-                </ListItem>
-              </List>
-            )
-          )}
+          {data.map((point) => (
+            <List type={listStyle ? "disc" : "none"} key={point.id}>
+              <ListItem border=".5px solid #00000050">
+                <p style={{ fontWeight: 600, lineHeight: -2 }}>
+                  <label htmlFor="" className="note_title">
+                    {point.title}
+                  </label>
+                  <hr />{" "}
+                  <label
+                    style={{
+                      fontSize: 12,
+                      fontWeight: 400,
+                      textTransform: "none",
+                    }}
+                    htmlFor=""
+                  >
+                    {point.note}
+                  </label>
+                </p>
+                <small style={{ fontSize: 10 }}>{point.timestamp}</small>
+                <EditNoteCard del={deleteNote} />
+              </ListItem>
+            </List>
+          ))}
         </div>
       </div>
-    </div>
+    </Wrapper>
   );
 }
 
