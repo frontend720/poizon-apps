@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from "react";
 import {
   getDatabase,
@@ -33,48 +34,43 @@ function Home() {
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       setAuthToken(user.uid);
+      setAccountEmail(user.email);
     });
-  },[]);
-
-  const emailStr = JSON.stringify(authToken);
-
-
+  }, []);
 
   const db = getDatabase(app);
 
+  const [accountEmail, setAccountEmail] = useState("");
   const [noteId, setNoteId] = useState(uuid());
-  const [title, setTitle] = useState("");
-  const [note, setNote] = useState("");
-  const [trigger, setTrigger] = useState(false);
   const [defaultText, setDefaultText] = useState("No notes to display");
   const [updateId, setUpdateId] = useState();
-
-  const [stupid, setStupid] = useState();
+  const [title, setTitle] = useState("");
+  const [note, setNote] = useState("");
 
   const [listStyle, setListStyle] = useState(false);
 
-  const username = "frontend720";
-
   const [data, setData] = useState([]);
-
-  const [tester, setTester] = useState();
 
   const [testThisNoteId, setTestThisNoteId] = useState(uuid());
 
+  // Create a new note
+
   const newNote = (e) => {
+    const d = new Date();
     e.preventDefault();
-    setTestThisNoteId(uuid());
     const noteRef = set(ref(db, `${authToken}/${testThisNoteId}`), {
       title,
       note,
       id: testThisNoteId,
       timestamp: moment().format("LLL"),
+      ISOfilter: Date.parse(d.toISOString()),
     });
     noteRef.then((data) => {
       console.log(data);
       setTitle("");
       setNote("");
-      setTrigger((prev) => !prev);
+      getNotes();
+      setTestThisNoteId(uuid())
     });
   };
 
@@ -88,7 +84,6 @@ function Home() {
           setDefaultText();
         } else {
           newNotes.push(note.val());
-          const data = note.val();
           setNoteId(note.val().id);
         }
       });
@@ -96,43 +91,19 @@ function Home() {
     });
   }
 
+  useEffect(() => {
+    getNotes()
+  }, [authToken])
+
+
+
   const listType = (e) => {
     setListStyle((prev) => !prev);
   };
 
-  async function deleteNote(e) {
-    e.preventDefault();
-
-    const noteRef = ref(db, `${username}/${tester}`);
-
-    remove(noteRef).then((data) => {
-      if (!data) {
-        return;
-      } else {
-        console.log(data);
-      }
-
-      setTrigger((prev) => !prev);
-
-      setUpdateId(null);
-    });
-  }
-  // console.log(tester);
-
-  // console.log(username)
-
-  setTimeout(() => {
-    getNotes()
-  }, 500)
-
-  useEffect(() => {
-    getNotes();
-    // deleteNote()
-  }, [trigger]);
-
   return (
     <Wrapper>
-      <Header title="Nappy Notes" />
+      <Header title="Nappy Notes" email={accountEmail} />
       <div className="note_container">
         <form onSubmit={newNote} action="">
           <div
@@ -163,7 +134,7 @@ function Home() {
             </div>
             <div style={{ margin: "6px 0px" }}>
               <Button background="none">
-                <ButtonText>New Note</ButtonText>
+                <ButtonText>Create Note</ButtonText>
               </Button>
             </div>
           </div>
@@ -197,11 +168,10 @@ function Home() {
                     htmlFor=""
                   >
                     {point.note}
-                    
                   </label>
                 </p>
                 <small style={{ fontSize: 10 }}>{point.timestamp}</small>
-                <EditNoteCard del={deleteNote} />
+                <EditNoteCard />
               </ListItem>
             </List>
           ))}

@@ -4,7 +4,8 @@ import styled from "styled-components"
 const Wrapper = styled.div`
 background: ${({color}) => color ? color : "#FAF0E650"};
 height: 100vh;
-width: 100%
+width: 100%;
+
 `
 
 const List = styled.ul`
