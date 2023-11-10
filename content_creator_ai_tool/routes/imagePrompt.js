@@ -9,7 +9,7 @@ imageRouter.post("/", (req, res) => {
 // Image models: "dall-e-2", "dall-e-3"
 // n = number of images to retrieve
 
-    model: "dall-e-3",
+    model: req.body.model,
     prompt: req.body.prompt,
 
 
