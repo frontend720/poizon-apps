@@ -4,8 +4,17 @@ const openai = require("../aiConfig");
 
 imageRouter.post("/", (req, res) => {
   const imageRef = openai.images.generate({
+
+
+// Image models: "dall-e-2", "dall-e-3"
+// n = number of images to retrieve
+
     model: "dall-e-3",
-    prompt: req.body.prompt
+    prompt: req.body.prompt,
+
+
+    // model: req.body.model,
+    n: req.body.n
   });
   imageRef
     .then((data) => {

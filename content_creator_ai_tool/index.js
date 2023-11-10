@@ -3,12 +3,17 @@ const app = express();
 const cors = require("cors");
 require("dotenv").config();
 const openai = require("./aiConfig")
+const db = require("./firebaseConfig");
+const morgan = require("morgan")
 
 const PORT = process.env.PORT;
 
+app.use(morgan("dev"))
+
+console.log(db)
+
 app.use(cors());
 app.use(express.json())
-console.log(openai)
 
 app.get("/hello", (req, res) => {
   res.send(
