@@ -1,3 +1,10 @@
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing:border-box;
+
+}
+
 .text_form {
   display: flex;
   flex-direction: column;
@@ -8,6 +15,7 @@
   resize: none;
   padding: 8px;
   font-size: 16px;
+  font-family: 'Open Sans', sans-serif;
 }
 
 .text_input:focus {
@@ -37,6 +45,10 @@
   padding: 48px;
 }
 
+ul{
+  list-style: none;
+}
+
 .conversation_text {
   font-family: "Open Sans", sans-serif;
   font-size: 16px;
@@ -51,16 +63,77 @@
 .conversation_container{
   padding: 6px;
   background: #44444425;
-  border-radius: 5px
+  border-radius: 10px
 }
 
 .image_container{
   width: 100%;
   display: grid;
-  grid-template-columns: repeat(2, 50%);
-  grid-gap: 24px
+  grid-template-columns: repeat(4, 1fr);
+  grid-gap: 24px;
+  /* padding: 48px */
+  margin-top: 40px
 }
 
 img{
-  width: 25%
+  width: 100%;
+  border-radius: 10px
+}
+
+.response_label{
+  font-family: 'Lato', sans-serif;
+  font-weight: bold;
+  letter-spacing: .25px;
+}
+
+.app_title{
+  font-family: 'Press Start 2P', sans-serif;
+  text-transform: uppercase
+}
+
+.auth_panel{
+  padding: 32px;
+  border: 12px double #444444
+}
+
+.auth_container{
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  padding: 48px;
+  grid-gap: 48px
+}
+
+.auth_inputs{
+  font-size: 18px;
+  padding: 6px;
+  border: 2px solid #444444;
+  margin: 12px 0px;
+  width: 75%
+}
+
+.point_item{
+  margin: 24px 0px;
+  font-family: "Open Sans", sans-serif;
+}
+
+.auth_form{
+  padding: 24px
+}
+
+.auth_panel{
+  display: flex;
+  flex-direction: column
+}
+
+.auth_btn{
+  width: 25%;
+  padding: 6px;
+  font-size: 16px;
+  border: 2px solid #444444;
+  color: #e8e8e8;
+  background: #44444495;
+  font-weight: 800;
+  font-family: 'Open Sans', sans-serif;
+  text-transform: uppercase;
+  margin-top: 10px
 }

@@ -13,6 +13,7 @@ export default function Home() {
   const [imageModel, setImageModel] = useState(false);
   const [numberToReturn, setNumberToReturn] = useState(1);
   const [isFinished, setIsFinished] = useState("");
+  const [testTrigger, setTestTrigger] = useState("")
 
   function askQuestion(e) {
     e.preventDefault();
@@ -50,7 +51,7 @@ export default function Home() {
       data: {
         prompt: prompt,
         model: model ? "dall-e-3" : "dall-e-2",
-        n: 4
+        n: 4,
       },
     };
     axios(request)
@@ -58,7 +59,8 @@ export default function Home() {
         setImage(data.data);
         console.log(data.data[0].revised_prompt);
         console.log(data.data);
-        setPrompt("")
+        setTestTrigger(data.data[0].url)
+        setPrompt("");
       })
       .catch((error) => console.log(error.code));
   }
@@ -121,12 +123,12 @@ export default function Home() {
         <h1>{isFinished}</h1>
       </div>
       <section className="response">
-        <header>
+        <header style={{marginBottom: 20}}>
           <h1>Conversation</h1>
         </header>
         <div className="conversation_container">
           {isFinished === "" ? (
-            <TextLoading />
+            <TextLoading text="Enter text in text prompt to begin generating responses..." />
           ) : (
             <>
               {data.map((item) => (
@@ -138,15 +140,27 @@ export default function Home() {
           )}
         </div>
         <section>
-          {image.map((i) => (
-            <>
-            
-            <div className="image_container" key={i.url}>
-              <img src={i.url} alt="" />
-              {/* <small className="summary">{i.revised_prompt}</small> */}
-            </div>
-            </>
-          ))}
+          <div className="image_container">
+            {testTrigger === "" ? (
+              <>
+              <div className="conversation_container" style={{width: "40%", position: "absolute"}}>
+
+                <TextLoading text="Enter text in image prompt to begin generating a scene..." />
+              </div>
+              </>
+            ) : (
+              <>
+                {image.map((i) => (
+                  <>
+                    <div key={i.url}>
+                      <img src={i.url} alt="" />
+                      <small className="summary">{i.revised_prompt}</small>
+                    </div>
+                  </>
+                ))}
+              </>
+            )}
+          </div>
         </section>
       </section>
     </div>

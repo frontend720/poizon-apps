@@ -11,7 +11,7 @@ imageRouter.post("/", (req, res) => {
 
     model: req.body.model,
     prompt: req.body.prompt,
-
+    
 
     // model: req.body.model,
     n: req.body.n
