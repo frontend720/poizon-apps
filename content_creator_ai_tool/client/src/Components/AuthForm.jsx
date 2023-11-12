@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 
-
 export default function AuthForm({
   submit,
   email,
@@ -9,11 +8,12 @@ export default function AuthForm({
   emailChange,
   passwordChange,
   authType,
+  toggle,
 }) {
   return (
-    <section className="auth_panel">
+    <form onSubmit={submit} className="auth_panel">
       <h1 className="app_title">{authType}</h1>
-      <form onSubmit={submit} action="" className="auth_form"></form>
+      <form action="" className="auth_form"></form>
       <label htmlFor="">email</label>
       <input
         name="email"
@@ -34,6 +34,13 @@ export default function AuthForm({
       <button type="submit" className="auth_btn">
         {btnText}
       </button>
-    </section>
+      <label
+        onClick={toggle}
+        style={{ padding: 6, textAlign: "right" }}
+        htmlFor=""
+      >
+        Login
+      </label>
+    </form>
   );
 }

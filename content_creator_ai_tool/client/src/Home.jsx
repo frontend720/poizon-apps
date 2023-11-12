@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import TextLoading from "./TextLoading";
+import Markdown from "react-markdown";
 
 export default function Home() {
   const [data, setData] = useState([]);
@@ -13,7 +14,8 @@ export default function Home() {
   const [imageModel, setImageModel] = useState(false);
   const [numberToReturn, setNumberToReturn] = useState(1);
   const [isFinished, setIsFinished] = useState("");
-  const [testTrigger, setTestTrigger] = useState("")
+  const [testTrigger, setTestTrigger] = useState("");
+  const [error, setError] = useState("");
 
   function askQuestion(e) {
     e.preventDefault();
@@ -29,14 +31,18 @@ export default function Home() {
 
     axios(request)
       .then((response) => {
+        console.log(response.data);
         const res = response.data.choices;
         setData(res);
-        console.log(res);
+        // console.log(res);
         setQuestion("");
         setIsFinished(res[0].finish_reason);
       })
 
-      .catch((error) => console.log(error.code));
+      .catch((error) => {
+        console.log(error.code);
+        setError("Something went wrong...");
+      });
   }
 
   function saveResponse(e) {
@@ -50,8 +56,8 @@ export default function Home() {
       url: "http://localhost:4500/image",
       data: {
         prompt: prompt,
-        model: model ? "dall-e-3" : "dall-e-2",
-        n: 4,
+        model: !imageModel ? "dall-e-3" : "dall-e-2",
+        n: !imageModel ? 1 : 3,
       },
     };
     axios(request)
@@ -59,7 +65,8 @@ export default function Home() {
         setImage(data.data);
         console.log(data.data[0].revised_prompt);
         console.log(data.data);
-        setTestTrigger(data.data[0].url)
+        console.log(data);
+        setTestTrigger(data.data[0].url);
         setPrompt("");
       })
       .catch((error) => console.log(error.code));
@@ -117,13 +124,13 @@ export default function Home() {
           </button>
           {/* <div className="spacer"></div> */}
         </form>
-        <button onClick={imageModelToggle}>
+        {/* <button onClick={imageModelToggle}>
           Switch to {imageModel ? "DALL-E-3" : "DALL-E-2"}
-        </button>
+        </button> */}
         <h1>{isFinished}</h1>
       </div>
       <section className="response">
-        <header style={{marginBottom: 20}}>
+        <header style={{ marginBottom: 20 }}>
           <h1>Conversation</h1>
         </header>
         <div className="conversation_container">
@@ -133,7 +140,11 @@ export default function Home() {
             <>
               {data.map((item) => (
                 <ul key={item.id}>
-                  <li className="conversation_text">{item.message.content}</li>
+                  <li className="conversation_text">
+                    <Markdown>{item.message.content}</Markdown>
+                    {/* {item.message.content} */}
+                    {error}
+                  </li>
                 </ul>
               ))}
             </>
@@ -143,18 +154,22 @@ export default function Home() {
           <div className="image_container">
             {testTrigger === "" ? (
               <>
-              <div className="conversation_container" style={{width: "40%", position: "absolute"}}>
-
-                <TextLoading text="Enter text in image prompt to begin generating a scene..." />
-              </div>
+                <div
+                  className="conversation_container"
+                  style={{ width: "40%", position: "absolute" }}
+                >
+                  <TextLoading text="Enter text in image prompt to begin generating a scene..." />
+                </div>
               </>
             ) : (
               <>
                 {image.map((i) => (
                   <>
                     <div key={i.url}>
-                      <img src={i.url} alt="" />
-                      <small className="summary">{i.revised_prompt}</small>
+                      <div>
+                        <img src={i.url} alt="" />
+                        <small className="summary">{i.revised_prompt}</small>
+                      </div>
                     </div>
                   </>
                 ))}

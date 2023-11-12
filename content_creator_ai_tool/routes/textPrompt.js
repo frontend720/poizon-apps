@@ -27,6 +27,8 @@ textRouter.post("/", (req, res) => {
     });
 });
 
+// Save response to database
+
 textRouter.post("/save", (req, res) => {
   const textPrompt = {
     prompt: req.body.prompt
