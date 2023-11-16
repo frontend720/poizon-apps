@@ -2,6 +2,7 @@ import React from "react";
 import { specialties, claims, contact, doctors } from "../data";
 import { Wrapper, Title, SubHeading, ListComponent, Text } from "../StyleSheet";
 import therapist from "../assets/studio.jpeg";
+import {GiHamburgerMenu} from "react-icons/gi"
 
 export default function Homepage() {
   return (
@@ -10,18 +11,18 @@ export default function Homepage() {
         Your Partner in Orthopaedic Care
       </Title>
       <ul className="nav">
-        <li>Home</li>
+        {/* <li>Home</li>
         <li>Scheduling</li>
         <li className="title_text">Boulder Orthopaedic</li>
         <li>About</li>
-        <li>Insurance</li>
-        
+        <li>Insurance</li> */}
+        <GiHamburgerMenu />
       </ul>
       <header className="hero">
         <h2 className="practice_name">Boulder Orthopaedic Group</h2>
       </header>
       <Text>
-        Welcome to Boulder Orthopedic Group, where we provide comprehensive
+        Welcome to Boulder Orthopaedic Group, where we provide comprehensive
         orthopaedic care to patients of all ages and activity levels. Our team
         of experienced and board-certified orthopaedic surgeons is dedicated to
         helping you achieve your best possible outcome, whether you are
@@ -36,7 +37,7 @@ export default function Homepage() {
       {/* <div className="spacer"></div> */}
       <section>
         <SubHeading margin="24px 0px">
-          Why Choose Boulder Orthopedic Group?
+          Why Choose Boulder Orthopaedic Group?
         </SubHeading>
         <div className="container">
           <ul className="claims">
@@ -44,7 +45,7 @@ export default function Homepage() {
               <li>{claim}</li>
             ))}
           </ul>
-          <img style={{ width: "30%" }} src={therapist} alt="" />
+          <img className="aux_image" src={therapist} alt="" />
         </div>
         <div className="spacer"></div>
         <SubHeading margin="24px 0px" htmlFor="">
@@ -53,7 +54,7 @@ export default function Homepage() {
         <Text>
           If you are experiencing pain or discomfort, or if you have any
           questions about your orthopaedic health, please schedule an
-          appointment with Boulder Orthopedic Group today. We are here to help
+          appointment with Boulder Orthopaedic Group today. We are here to help
           you get back to living your life to the fullest.
         </Text>
       </section>

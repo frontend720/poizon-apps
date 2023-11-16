@@ -9,6 +9,7 @@ export default function AuthForm({
   passwordChange,
   authType,
   toggle,
+  error,
 }) {
   return (
     <form onSubmit={submit} className="auth_panel">
@@ -22,6 +23,9 @@ export default function AuthForm({
         className="auth_inputs"
         type="text"
       />
+      <label style={{ fontWeight: "500", color: "#cc5500" }} htmlFor="">
+        {error === "auth/email-already-in-use" ? "Email already in use. Try logging in." : ""}
+      </label>
       <br />
       <label htmlFor="">password</label>
       <input

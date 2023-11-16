@@ -14,7 +14,9 @@ const Title = styled.h1`
     font-weight: 700;
     padding: ${({padding})=> padding ? padding : "12px 0px"};
     color: ${({color})=> color ? color : "#444444"};
-    font-size: ${({size}) => size ? size : "38px"}
+    font-size: ${({size}) => size ? size : "24px"};
+    @media screen and (max-width: 650px){  
+    }
     
 `
 

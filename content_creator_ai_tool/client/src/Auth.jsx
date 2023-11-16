@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 import AuthForm from "./Components/AuthForm";
 import { app } from "./config";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
 
 export default function Auth() {
   const auth = getAuth(app);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("")
 
 
 
@@ -42,8 +43,17 @@ export default function Auth() {
       })
       .catch((error) => {
         console.log(error.code);
+        setError(error.code)
       });
   };
+
+  const login = (e) => {
+    e.preventDefault()
+    const userRef = signInWithEmailAndPassword(auth, email, password)
+    userRef.then((user) => {
+
+    })
+  }
 
   return (
     <div className="auth_container">
@@ -71,6 +81,7 @@ export default function Auth() {
         passwordChange={(e) => setPassword(e.target.value)}
         btnText="Signup"
         submit={signup}
+        error={error}
       />
     </div>
   );

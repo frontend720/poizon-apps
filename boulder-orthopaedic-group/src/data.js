@@ -21,7 +21,7 @@ const claims = [
 ];
 
 const contact = [
-  " Boulder Orthopedic Group",
+  " Boulder Orthopaedic Group",
 
   "123 Main Street",
 
@@ -33,14 +33,14 @@ const contact = [
 const doctors = [
   {
     doctor: "Dr. Daniel Craig",
-    bio: "Dr. Daniel Craig is a compassionate and patient-centered orthopedic surgeon with extensive experience in minimally invasive surgery and sports medicine. Dr. Craig specializes in minimally invasive surgery and has a particular interest in sports medicine. He is also a member of the American Academy of Orthopedic Surgeons and the American Board of Orthopedic Surgery.",
+    bio: "Dr. Daniel Craig is a compassionate and patient-centered orthopaedic surgeon with extensive experience in minimally invasive surgery and sports medicine. Dr. Craig specializes in minimally invasive surgery and has a particular interest in sports medicine. He is also a member of the American Academy of Orthopedic Surgeons and the American Board of Orthopedic Surgery.",
     school: "University of Utah Medicine",
     img: doctorTwo,
     id: 0
   },
   {
     doctor: "Dr. Ethan Adams",
-    bio: " Dr. Ethan Adams is a well-respected orthopedic clinical doctor who is passionate about providing his patients with the highest quality of care and helping them achieve their best possible outcomes. Dr. Adams specializes in non-surgical treatments for orthopedic conditions, such as physical therapy, injections, and medications. He is also a member of the American College of Rheumatology and the American Board of Internal Medicine.",
+    bio: " Dr. Ethan Adams is a well-respected orthopaedic clinical doctor who is passionate about providing his patients with the highest quality of care and helping them achieve their best possible outcomes. Dr. Adams specializes in non-surgical treatments for orthopaedic conditions, such as physical therapy, injections, and medications. He is also a member of the American College of Rheumatology and the American Board of Internal Medicine.",
     school: "University of Colorado Medicine",
     img: doctorOne,
     id:1

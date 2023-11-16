@@ -70,7 +70,7 @@ function Home() {
       setTitle("");
       setNote("");
       getNotes();
-      setTestThisNoteId(uuid())
+      setTestThisNoteId(uuid());
     });
   };
 
@@ -91,19 +91,36 @@ function Home() {
     });
   }
 
+  function removeNote(e) {
+    e.preventDefault();
+    if (!noteId) {
+      return;
+    } else {
+      const deleteReference = remove(
+        db,
+        `${authToken}/${JSON.stringify(noteId)}`
+      );
+      deleteReference
+        .then((data) => {
+          console.log(data);
+        })
+        .catch((error) => console.log(error));
+    }
+  }
+
   useEffect(() => {
-    getNotes()
-  }, [authToken])
-
-
+    getNotes();
+  }, [authToken]);
 
   const listType = (e) => {
     setListStyle((prev) => !prev);
   };
 
+  console.log(authToken + "/" + JSON.stringify(noteId))
   return (
     <Wrapper>
       <Header title="Nappy Notes" email={accountEmail} />
+
       <div className="note_container">
         <form onSubmit={newNote} action="">
           <div
@@ -132,6 +149,7 @@ function Home() {
                 rows="10"
               />
             </div>
+
             <div style={{ margin: "6px 0px" }}>
               <Button background="none">
                 <ButtonText>Create Note</ButtonText>
@@ -139,6 +157,7 @@ function Home() {
             </div>
           </div>
         </form>
+
         <div>
           <label
             onClick={listType}
@@ -151,8 +170,11 @@ function Home() {
           >
             {!listStyle ? "Add bullets" : "Remove bullets"}
           </label>
+
           {data.map((point) => (
-            <List type={listStyle ? "disc" : "none"} key={point.id}>
+            <List type={listStyle ? "disc" : "none"} key={point.ISOfilter}>
+              {console.log(point.ISOfilter)}
+
               <ListItem border=".5px solid #00000050">
                 <p style={{ fontWeight: 600, lineHeight: -2 }}>
                   <label htmlFor="" className="note_title">
@@ -170,8 +192,10 @@ function Home() {
                     {point.note}
                   </label>
                 </p>
+
                 <small style={{ fontSize: 10 }}>{point.timestamp}</small>
-                <EditNoteCard />
+
+                <EditNoteCard del={removeNote} />
               </ListItem>
             </List>
           ))}
