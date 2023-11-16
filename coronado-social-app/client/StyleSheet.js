@@ -10,9 +10,8 @@ const Wrapper = styled.div`
 const Form = styled.form`
   background: #ffffffc4;
   padding: 6px;
-  margin-top: 48px;
+  margin-top: 24px;
   border-radius: 25px;
-
 `;
 
 const Button = styled.button`
@@ -44,4 +43,43 @@ const Textarea = styled.textarea`
   padding: 3px;
   font-size: 20px;
 `;
-export { Wrapper, Button, Input, Textarea, Form };
+
+const Container = styled.div`
+  background: #ffffff;
+  padding: 16px;
+  border-radius: 25px;
+  margin-top: 40px;
+`;
+
+const Body = styled.p`
+  font-family: "Ubuntu", sans-serif;
+  font-size: ${({ size }) => (size ? size : "16px")};
+  text-align: ${({ align }) => (align ? align : "left")};
+  color: ${({ color }) => (color ? color : "#444444")};
+`;
+
+const Heading = styled.h1`
+  font-family: "Montserrat", sans-serif;
+  font-size: 22px;
+  text-align: ${({ align }) => (align ? align : "center")};
+  color: ${({ color }) => (color ? color : "#444444")};
+`;
+
+const AuthInput = styled.input`
+  width: 100%;
+  font-size: 18px;
+  padding: 8px;
+  margin-bottom: 20px
+`;
+
+export {
+  Wrapper,
+  Button,
+  Input,
+  Textarea,
+  Form,
+  Container,
+  Body,
+  Heading,
+  AuthInput,
+};

@@ -13,7 +13,7 @@ export default function AccountFormComponent({
   display,
 }) {
   return (
-    <div style={{ display: display }}>
+    <div style={{ display: display, paddingTop: 48 }}>
       <Button onClick={cancelToggle} color="#3a86ff">
         Cancel
       </Button>

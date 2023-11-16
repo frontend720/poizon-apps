@@ -10,21 +10,18 @@ console.log(db.collection);
 
 // Post
 
-user.post("/", (req, res) => {
-  const accountId = uuidv4();
+user.post("/:id", (req, res) => {
+  const accountId = req.params.id
 
   const date = new Date();
   const data = {
     username: req.body.username,
     age: req.body.age,
     bio: req.body.bio,
-    profileimage:
-      req.body.profileimage ||
-      "https://www.bing.com/images/create/a-modern-silhouette-style-gray-default-profile-ava/6552af002dfb4a3aa4349f1336fa185a?id=pyQCdxO5PnUWDQbN6ZZGXg%3D%3D&view=detailv2&idpp=genimg&form=GCRIDP&ajaxhist=0&ajaxserp=0",
     id: accountId,
     createdAt: date,
   };
-  const collectionRef = db.collection("whippers").doc(accountId).set(data);
+  const collectionRef = db.collection("whippers").doc(accountId).set(data, {merge: true});
   collectionRef
     .then((data) => {
       if (!data) {
@@ -35,6 +32,30 @@ user.post("/", (req, res) => {
     })
     .catch((error) => {
       return res.status(500).send({ error: error.message });
+    });
+});
+
+// POST AN IMAGE
+
+user.post("/image/:id", (req, res) => {
+  const accountId = req.params.id;
+  const data = {
+    profileImage: req.body.profileImage,
+  };
+  const collectionRef = db
+    .collection("whippers")
+    .doc(accountId)
+    .set(data, { merge: true });
+  collectionRef
+    .then((data) => {
+      if (!data) {
+        res.status(400).send({ message: "No image to upload" });
+      } else {
+        res.status(200).send(data);
+      }
+    })
+    .catch((error) => {
+      res.status(400).send({ message: error.code });
     });
 });
 
@@ -71,7 +92,26 @@ user.put("/:id", (req, res) => {
     });
 });
 
+// GET USER
+
+user.get("/:id", (req, res) => {
+  const userId = req.params.id;
+  const collectionRef = db.collection("whippers").doc(userId).get();
+  collectionRef
+    .then((data) => {
+      if (!data.exists) {
+        res.status(400).send({ message: "No user found" });
+      } else {
+        res.status(200).send(data.data());
+      }
+    })
+    .catch((error) => {
+      return res.status(500).send({ message: error.code });
+    });
+});
+
 // GET ALL USER
+
 
 user.get("/", (req, res) => {
   const collectionRef = db.collection("whippers").get();

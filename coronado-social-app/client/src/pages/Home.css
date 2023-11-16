@@ -15,3 +15,7 @@ input:focus, textarea:focus{
 input::placeholder, textarea::placeholder{
     color: #444444ce
 }
+
+ion-icon{
+    color: #444444
+}
