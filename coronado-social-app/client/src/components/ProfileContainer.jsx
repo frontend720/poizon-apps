@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { Container, Body, Heading } from "../../StyleSheet";
+import { Container, Body, Heading, Button } from "../../StyleSheet";
 import { IonIcon } from "@ionic/react";
 import { createOutline, cameraOutline } from "ionicons/icons";
 import app from "../config";
 import { v4 as uuid } from "uuid";
 import axios from "axios";
-import { onAuthStateChanged, getAuth } from "firebase/auth";
+import { onAuthStateChanged, getAuth, signOut } from "firebase/auth";
 
 export default function ProfileContainer({ editToggle, display }) {
   const auth = getAuth(app);
@@ -19,71 +19,44 @@ export default function ProfileContainer({ editToggle, display }) {
   }, []);
 
   function getUser() {
-    axios({
-      method: "GET",
-      url: `http://localhost:4600/${authObj}`,
-    }).then((response) => {
-      console.log(response.data);
-      setData(response.data.profileImage);
-      setUsername(response.data.username);
-      setBio(response.data.bio);
-    });
+    if (!authObj) {
+      return;
+    } else {
+      axios({
+        method: "GET",
+        url: `http://localhost:4600/${authObj}`,
+      }).then((response) => {
+        console.log(response.data);
+        setData(response.data.profileImage);
+        setUsername(response.data.username);
+        setBio(response.data.bio);
+      });
+    }
+  }
+
+  function logout() {
+    signOut(auth)
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((error) => console.log(error.code));
   }
 
   useEffect(() => {
     getUser();
-  }, []);
+  }, [authObj]);
 
   // getUser()
 
   console.log(authObj);
 
   const [image, setImage] = useState(undefined);
-  const [accountId, setAccountId] = useState(uuid());
-  const [url, setUrl] = useState("");
-  const [imageUrl, setImageUrl] = useState(undefined);
-  const [toggle, setToggle] = useState(false);
+  const [imageUrl, setImageUrl] = useState();
   const [data, setData] = useState("");
   const [bio, setBio] = useState("");
   const [username, setUsername] = useState("");
+  const [trigger, setTrigger] = useState(null);
 
-  function addImage() {
-    axios({
-      method: "POST",
-      url: `http://localhost:4600/image/${authObj}`,
-      data: {
-        profileImage: imageUrl,
-      },
-    })
-      .then((data) => {
-        console.log(data.data);
-        setTimeout(() => {
-          getUser();
-        }, 1500);
-      })
-      .catch((error) => console.log(error.code));
-  }
-
-  const storage = getStorage(app);
-  //   console.log(uuid());
-
-  async function upload() {
-    const imageRef = ref(storage, `images/${authObj}`);
-    try {
-      await uploadBytes(imageRef, image);
-      const url = await getDownloadURL(imageRef);
-      setImageUrl(url);
-      setTimeout(() => {
-        addImage();
-      }, 2000);
-    } catch (error) {
-      console.log(error.code);
-    }
-  }
-
-  useEffect(() => {
-    upload();
-  }, [image]);
 
   console.log(data);
 
@@ -103,7 +76,7 @@ export default function ProfileContainer({ editToggle, display }) {
           <img
             src={data}
             style={
-              image === undefined
+              imageUrl !== undefined
                 ? { display: "none" }
                 : {
                     display: "block",
@@ -130,6 +103,24 @@ export default function ProfileContainer({ editToggle, display }) {
         <Body align="center">{bio}</Body>
         <IonIcon onClick={editToggle} size="large" icon={createOutline} />
       </Container>
+      <Button
+        style={{
+          marginTop: 20,
+          display: "flex",
+          flexDirection: "row",
+          alignItems: "center",
+          width: "10%",
+        }}
+        onClick={logout}
+      >
+        <span
+          style={{ fontSize: 26, paddingRight: 16 }}
+          className="material-symbols-outlined pet"
+        >
+          logout
+        </span>
+        logout
+      </Button>
     </div>
   );
 }

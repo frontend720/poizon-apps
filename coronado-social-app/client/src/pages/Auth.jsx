@@ -2,7 +2,11 @@ import React from "react";
 import { Button, Wrapper, AuthInput } from "../../StyleSheet";
 import app from "../config";
 import "./Auth.css";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
 import googleIcon from "../google.svg";
 
 export default function Auth() {
@@ -10,6 +14,7 @@ export default function Auth() {
 
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
+  const [toggle, setToggle] = React.useState(true);
 
   function newUser(e) {
     e.preventDefault();
@@ -21,9 +26,29 @@ export default function Auth() {
       .catch((error) => console.log(error.code));
   }
 
+  function returningUser(e) {
+    e.preventDefault();
+    const user = signInWithEmailAndPassword(auth, email, password);
+    user
+      .then((data) => {
+        console.log(data.user);
+      })
+      .catch((error) => {
+        console.log(error.code);
+      });
+  }
+
+  const authToggle = () => {
+    setToggle((prev) => !prev);
+  };
+
   return (
     <Wrapper color="#9e579d">
-      <form onSubmit={newUser} action="" style={{ width: "100%", marginTop: 40 }}>
+      <form
+        onSubmit={toggle ? newUser : returningUser}
+        action=""
+        style={{ width: "100%", marginTop: 40 }}
+      >
         <Button
           color="#40514e"
           disabled
@@ -42,11 +67,23 @@ export default function Auth() {
           >
             mail
           </span>
-          <label htmlFor="">sign up with email</label>
+          <label htmlFor="">{toggle ? "sign up" : "log in"} with email</label>
         </Button>
-        <AuthInput name="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" type="text" />
-        <AuthInput name="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" type="text" />
-        <Button style={{ borderRadius: 5 }}>SIGNup</Button>
+        <AuthInput
+          name="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          placeholder="Email"
+          type="email"
+        />
+        <AuthInput
+          name="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          placeholder="Password"
+          type="text"
+        />
+        <Button style={{ borderRadius: 5 }}>{toggle ? "Signup" : "Login"}</Button>
         <h1
           style={{
             textAlign: "center",
@@ -74,6 +111,7 @@ export default function Auth() {
           />
           continue with Google
         </Button>
+        <label onClick={authToggle} style={{textAlign: "right"}} htmlFor="">{toggle ? "Login" : "Signup"}</label>
       </form>
     </Wrapper>
   );

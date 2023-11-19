@@ -20,6 +20,7 @@ user.post("/:id", (req, res) => {
     bio: req.body.bio,
     id: accountId,
     createdAt: date,
+    profileImage: req.body.profileImage || "https://images.pexels.com/photos/19161535/pexels-photo-19161535/free-photo-of-a-person-standing-on-top-of-a-mountain-looking-at-the-snow-covered-mountains.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
   };
   const collectionRef = db.collection("whippers").doc(accountId).set(data, {merge: true});
   collectionRef
@@ -40,7 +41,7 @@ user.post("/:id", (req, res) => {
 user.post("/image/:id", (req, res) => {
   const accountId = req.params.id;
   const data = {
-    profileImage: req.body.profileImage,
+    profileImage: req.body.profileImage || "https://images.pexels.com/photos/19161535/pexels-photo-19161535/free-photo-of-a-person-standing-on-top-of-a-mountain-looking-at-the-snow-covered-mountains.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
   };
   const collectionRef = db
     .collection("whippers")
@@ -69,7 +70,7 @@ user.put("/:id", (req, res) => {
     bio: req.body.bio,
     profileimage:
       req.files.profileimage ||
-      "https://www.bing.com/images/create/a-modern-silhouette-style-gray-default-profile-ava/6552af002dfb4a3aa4349f1336fa185a?id=pyQCdxO5PnUWDQbN6ZZGXg%3D%3D&view=detailv2&idpp=genimg&form=GCRIDP&ajaxhist=0&ajaxserp=0",
+      "https://images.pexels.com/photos/19161535/pexels-photo-19161535/free-photo-of-a-person-standing-on-top-of-a-mountain-looking-at-the-snow-covered-mountains.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
     editedAt: date,
   };
 
