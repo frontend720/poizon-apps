@@ -7,6 +7,7 @@ import app from "../config";
 import { v4 as uuid } from "uuid";
 import axios from "axios";
 import { onAuthStateChanged, getAuth, signOut } from "firebase/auth";
+import Router from "./Router";
 
 export default function ProfileContainer({ editToggle, display }) {
   const auth = getAuth(app);
@@ -48,14 +49,12 @@ export default function ProfileContainer({ editToggle, display }) {
 
   // getUser()
 
-  console.log(authObj);
 
-  const [image, setImage] = useState(undefined);
-  const [imageUrl, setImageUrl] = useState();
+
+
   const [data, setData] = useState("");
   const [bio, setBio] = useState("");
   const [username, setUsername] = useState("");
-  const [trigger, setTrigger] = useState(null);
 
 
   console.log(data);
@@ -73,22 +72,6 @@ export default function ProfileContainer({ editToggle, display }) {
             name="image"
             onChange={(e) => setImage(e.target.files[0])}
           />
-          <img
-            src={data}
-            style={
-              imageUrl !== undefined
-                ? { display: "none" }
-                : {
-                    display: "block",
-                    width: "100%",
-                    alignSelf: "center",
-                    maxHeight: 450,
-                    borderRadius: 15,
-                  }
-            }
-            alt=""
-          />
-
           <label style={{ textAlign: "right" }} htmlFor="camera-icon">
             <IonIcon
               icon={cameraOutline}
@@ -121,6 +104,7 @@ export default function ProfileContainer({ editToggle, display }) {
         </span>
         logout
       </Button>
+      <Router />
     </div>
   );
 }

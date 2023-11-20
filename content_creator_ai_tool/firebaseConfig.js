@@ -9,7 +9,7 @@ const config = {
     messagingSenderId: process.env.MESSAGING_SENDER_ID,
     appId: process.env.APP_ID,
     measurementId: process.env.MEASUREMENT_ID,
-    credential: admin.credential.cert(require("./bate-mates-firebase-adminsdk-7u7pc-3ca3c5e8c6.json"))
+    credential: admin.credential.cert(require("./firebase.json"))
 }
 
 const app = admin.initializeApp(config)

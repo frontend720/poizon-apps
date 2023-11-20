@@ -72,6 +72,23 @@ const AuthInput = styled.input`
   margin-bottom: 20px
 `;
 
+const NavContainer = styled.ul`
+  padding: 6px;
+  width: 92.5%;
+  background-color: #e8e8e8;
+  display: flex;
+  justify-content: space-between;
+  border-radius: 25px;
+  list-style: none;
+  position: absolute;
+  bottom: 0;
+  margin-bottom: 30px;
+  z-index: 2;
+  align-items: center;
+  max-height: 50px
+
+`
+
 export {
   Wrapper,
   Button,
@@ -82,4 +99,5 @@ export {
   Body,
   Heading,
   AuthInput,
+  NavContainer
 };
