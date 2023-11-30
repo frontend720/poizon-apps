@@ -10,8 +10,6 @@ const PORT = process.env.PORT;
 
 app.use(morgan("dev"));
 
-console.log(db);
-
 app.use(cors());
 app.use(express.json());
 

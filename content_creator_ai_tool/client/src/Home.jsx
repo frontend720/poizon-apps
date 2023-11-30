@@ -3,6 +3,9 @@ import axios from "axios";
 import TextLoading from "./TextLoading";
 import Markdown from "react-markdown";
 import Edits from "./Edits";
+import Nav from "./Components/Nav";
+import {} from "react-icons/ai";
+
 
 export default function Home() {
   const [data, setData] = useState([]);
@@ -17,6 +20,7 @@ export default function Home() {
   const [isFinished, setIsFinished] = useState("");
   const [testTrigger, setTestTrigger] = useState("");
   const [error, setError] = useState("");
+  const [responseQuestion, setResponseQuestion] = useState("");
 
   const [toggle, setToggle] = useState(true);
 
@@ -26,8 +30,9 @@ export default function Home() {
       method: "POST",
       url: "http://localhost:4500/chat",
       data: {
-        prompt: question || "make up a bogus feel fact",
+        prompt: question,
         model: model ? "gpt-4" : "gpt-3.5-turbo-1106",
+        // model: "gpt-3.5-turbo",
         n: question === "" ? 1 : numberToReturn,
       },
     };
@@ -38,7 +43,9 @@ export default function Home() {
         const res = response.data.choices;
         setData(res);
         // console.log(res);
-        setQuestion("");
+        setQuestion("")
+        setResponseQuestion(question)
+        
         setIsFinished(res[0].finish_reason);
       })
 
@@ -77,6 +84,7 @@ export default function Home() {
 
   function modelToggle() {
     setModel((prev) => !prev);
+    console.log("toggled")
   }
 
   function imageModelToggle() {
@@ -87,113 +95,54 @@ export default function Home() {
     setToggle((prev) => !prev);
   };
 
-  return (
-    <>
-      {toggle ? (
-        <div className="container">
-          <div>
-            <button onClick={modelToggle}>
-              Switch to {!model ? "GPT-4" : "GPT-3.5-turbo"}
-            </button>
-            <form className="text_form" onSubmit={askQuestion}>
-              <div className="spacer"></div>
-              <textarea
-                className="text_input"
-                id="w3review"
-                name="question"
-                value={question}
-                onChange={(e) => setQuestion(e.target.value)}
-                rows="4"
-                cols="50"
-                placeholder="Text prompt..."
-              ></textarea>
-              <div className="spacer"></div>
-              <button className="submit_btn" type="submit">
-                <label className="btn_text" htmlFor="">
-                  Ask a Question
-                </label>
-              </button>
-            </form>
+  responseQuestion.replace(/n/, /n\n/)
 
-            <form className="text_form" onSubmit={imageQuestion}>
-              <textarea
-                type="text"
-                placeholder="Image prompt..."
-                value={prompt}
-                onChange={(e) => setPrompt(e.target.value)}
-                rows="4"
-                //   disabled
-                className="text_input"
-              ></textarea>
-              <div className="spacer"></div>
-              <button className="submit_btn" type="submit">
-                <label htmlFor="" className="btn_text">
-                  Generate new image
-                </label>
-              </button>
-              {/* <div className="spacer"></div> */}
-            </form>
-            <button onClick={imageModelToggle}>
-              Switch to {imageModel ? "DALL-E-3" : "DALL-E-2"}
-            </button>
-            <h1>{isFinished}</h1>
-          </div>
-          <section className="response">
-            <header style={{ marginBottom: 20 }}>
-              <h1>Conversation</h1>
-            </header>
-            <div className="conversation_container">
-              {isFinished === "" ? (
-                <TextLoading text="Enter text in text prompt to begin generating responses..." />
-              ) : (
-                <>
-                  {data.map((item) => (
-                    <ul key={item.id}>
-                      <li className="conversation_text">
-                        <Markdown>{item.message.content}</Markdown>
-                        {/* {item.message.content} */}
-                        {error}
-                      </li>
-                    </ul>
-                  ))}
-                </>
-              )}
-            </div>
-            <section>
-              <div className="image_container">
-                {testTrigger === "" ? (
-                  <>
-                    <div
-                      className="conversation_container"
-                      style={{ width: "40%", position: "absolute" }}
-                    >
-                      <TextLoading text="Enter text in image prompt to begin generating a scene..." />
-                    </div>
-                  </>
-                ) : (
-                  <>
-                    {image.map((i) => (
-                      <>
-                        <div key={i.url}>
-                          <div>
-                            <img src={i.url} alt="" />
-                            <small className="summary">
-                              {i.revised_prompt}
-                            </small>
-                          </div>
-                        </div>
-                      </>
-                    ))}
-                  </>
-                )}
-              </div>
-            </section>
-          </section>
-          <button onClick={componentToggle}>toggle component</button>
-        </div>
-      ) : (
-        <Edits toggle={componentToggle} />
-      )}
-    </>
+  return (
+    <div className="home_container">
+      <div className="response_container">
+        {/* <div className="type_container">
+    <label htmlFor="" className="just_spiraling">Switch to:</label>
+        <span className="material-symbols-outlined">{"looks_3"}</span>
+        <span className="material-symbols-outlined">looks_4</span>
+        </div> */}
+        <Nav switchModel={modelToggle} modelState={!model ? "looks_3" : "looks_4"} />
+        <div className="conversation_container">
+        {isFinished === "" ? (
+          <TextLoading text="." />
+        ) : (
+          <>
+            {data.map((item) => (
+          
+              <>
+              <ul style={{paddingTop: 60}} key={item.id}>
+                <label className="question" htmlFor="">{responseQuestion}</label>
+                <li className="conversation_text">
+                  <Markdown>{item.message.content}</Markdown>
+                  {/* {item.message.content} */}
+                  {error}
+                </li>
+              </ul>
+              </>
+            ))}
+          </>
+        )}
+      </div>
+      </div>
+      <form className="form_container" action="">
+        <input autoFocus style={{ width: "100%", fontSize: 20, padding: 6 }} name="question" id="question" value={question} onChange={(e)=>setQuestion(e.target.value)} type="text" />
+        <button style={{background: "#444444"}} onClick={askQuestion}>
+          <span style={{background: "#444444"}} className="material-symbols-outlined">send</span>
+        </button>
+      </form>
+    </div>
   );
 }
+
+
+//
+{/* <button>
+ <span className="material-symbols-outlined">image</span>
+</button>
+<button>
+<span className="material-symbols-outlined">edit</span>
+</button> */}

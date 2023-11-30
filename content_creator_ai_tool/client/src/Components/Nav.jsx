@@ -1,7 +1,38 @@
-import React from 'react'
+import React from "react";
 
-export default function Nav() {
+export default function Nav({switchModel, modelState}) {
+
+
+
+
   return (
-    <div>Nav</div>
-  )
+    <div className="nav">
+      <div className="type_container">
+        <label htmlFor="" className="just_spiraling">
+          Switch to:
+        </label>
+        <button onClick={switchModel}>
+        <span className="material-symbols-outlined">{modelState}</span>
+        </button>
+      
+      </div>
+      <ul className="nav_bar">
+      <li>
+          <button>
+            <span className="material-symbols-outlined">edit</span>
+          </button>
+        </li>
+        <li>
+          <button>
+            <span className="material-symbols-outlined">image</span>
+          </button>
+        </li>
+      <li>
+        <button>
+        <span className="material-symbols-outlined">person</span>
+        </button>
+      </li>
+      </ul>
+    </div>
+  );
 }
