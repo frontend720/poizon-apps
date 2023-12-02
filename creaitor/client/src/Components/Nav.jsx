@@ -1,4 +1,5 @@
 import React from "react";
+import {Link} from "react-router-dom"
 
 export default function Nav({switchModel, modelState, type}) {
 
@@ -16,22 +17,22 @@ export default function Nav({switchModel, modelState, type}) {
         </button>
       
       </div>
-      <label htmlFor="">{type}</label>
+      <span  className="material-symbols-outlined" htmlFor="">{type}</span>
       <ul className="nav_bar">
       <li>
-          <button>
+          <Link to="/write">
             <span className="material-symbols-outlined">edit</span>
-          </button>
+          </Link>
         </li>
         <li>
-          <button>
+          <Link to="/artist">
             <span className="material-symbols-outlined">image</span>
-          </button>
+          </Link>
         </li>
       <li>
-        <button>
+        <Link to="/">
         <span className="material-symbols-outlined">person</span>
-        </button>
+        </Link>
       </li>
       </ul>
     </div>

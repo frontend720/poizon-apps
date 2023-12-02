@@ -12,8 +12,7 @@ textRouter.post("/", (req, res) => {
 
     messages: [{ role: "user", content: req.body.prompt }],
     model: req.body.model,
-    n: req.body.n,
-    max_tokens: 256,
+    n: req.body.n
   });
   completion
     .then((data) => {

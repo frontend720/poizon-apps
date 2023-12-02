@@ -10,6 +10,7 @@ export default function AuthForm({
   authType,
   toggle,
   error,
+  toggleText
 }) {
   return (
     <form onSubmit={submit} className="auth_panel">
@@ -43,7 +44,7 @@ export default function AuthForm({
         style={{ padding: 6, textAlign: "right" }}
         htmlFor=""
       >
-        Login
+        {toggleText}
       </label>
     </form>
   );

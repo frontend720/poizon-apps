@@ -4,8 +4,15 @@ import TextLoading from "./TextLoading";
 import Markdown from "react-markdown";
 import Edits from "./Edits";
 import Nav from "./Components/Nav";
+import { getFirestore } from "firebase/firestore";
+import {app} from "./config";
 
 export default function Home() {
+
+
+const db = getFirestore(app)
+
+
   const [data, setData] = useState([]);
   const [question, setQuestion] = useState("");
 
@@ -31,7 +38,6 @@ export default function Home() {
       data: {
         prompt: question,
         model: model ? "gpt-4" : "gpt-3.5-turbo-1106",
-        // model: "gpt-3.5-turbo",
         n: 1
       },
     };
@@ -90,23 +96,13 @@ export default function Home() {
     setImageModel((prev) => !prev);
   }
 
-  const componentToggle = () => {
-    setToggle((prev) => !prev);
-  };
-
   responseQuestion.replace(/n/, /n\n/)
-
-
 
   return (
     <div className="home_container">
       <div className="response_container">
-        {/* <div className="type_container">
-    <label htmlFor="" className="just_spiraling">Switch to:</label>
-        <span className="material-symbols-outlined">{"looks_3"}</span>
-        <span className="material-symbols-outlined">looks_4</span>
-        </div> */}
-        <Nav switchModel={modelToggle} type="chat" modelState={!model ? "looks_3" : "looks_4"} />
+  
+        <Nav switchModel={modelToggle} type="keyboard" modelState={model ? "looks_3" : "looks_4"} />
         <div className="conversation_container">
         {isFinished === "" ? (
           <TextLoading text="." />
