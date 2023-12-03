@@ -1,10 +1,14 @@
-import React from "react";
+import React, {useState} from "react";
 import {Link} from "react-router-dom"
 
 export default function Nav({switchModel, modelState, type}) {
 
+const [model, setModel] = useState(true)
 
 
+function onNavToggle(){
+  setModel(prev => !prev)
+}
 
   return (
     <div className="nav">
@@ -19,16 +23,21 @@ export default function Nav({switchModel, modelState, type}) {
       </div>
       <span  className="material-symbols-outlined" htmlFor="">{type}</span>
       <ul className="nav_bar">
-      <li>
-          <Link to="/write">
-            <span className="material-symbols-outlined">edit</span>
+      <li >
+          <Link onClick={onNavToggle} to={model ? "/write" : "/artist"}>
+            <span className="material-symbols-outlined">{model ? "edit" : "image"}</span>
           </Link>
         </li>
         <li>
+          <Link  to="/saved">
+          <span className="material-symbols-outlined">favorite</span>
+          </Link>
+        </li>
+        {/* <li>
           <Link to="/artist">
             <span className="material-symbols-outlined">image</span>
           </Link>
-        </li>
+        </li> */}
       <li>
         <Link to="/">
         <span className="material-symbols-outlined">person</span>

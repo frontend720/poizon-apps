@@ -10,6 +10,7 @@ import Auth from "./Auth";
 import Account from "./Account";
 import Create from "./Create";
 import Nav from "./Components/Nav";
+import Note from "./Note";
 
 function App() {
   const auth = getAuth(app);
@@ -18,7 +19,7 @@ function App() {
 
   useEffect(() => {
     onAuthStateChanged(auth, (obj) => {
-      console.log(obj);
+
       setToken(obj);
     });
   }, []);
@@ -31,6 +32,7 @@ function App() {
       <Route exact path="/" element={<Account />}/>      
       <Route path="/write" element={<Home/>} />
       <Route path="/artist" element={<Create />}/>
+      <Route path="/saved" element={<Note />} />
     </Routes>
     </>
   );

@@ -1,13 +1,31 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Nav from "./Components/Nav";
 import axios from "axios";
+import {getFirestore, doc, setDoc} from "firebase/firestore"
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+import {app} from "./config"
+import {v4 as uuidv4} from "uuid"
 
 export default function Create() {
+
+const db = getFirestore(app)
+const auth = getAuth(app)
+
+
+
   const [model, setModel] = React.useState(false);
   const [imageModel, setImageModel] = useState();
   const [image, setImage] = useState([]);
   const [testTrigger, setTestTrigger] = useState("");
   const [prompt, setPrompt] = useState("");
+  const [email, setEmail] = useState("")
+  const[threePrompt, setThreePrompt] = useState("")
+
+  useEffect(() => {
+    onAuthStateChanged(auth, (obj) => {
+      setEmail(obj.email)
+    })
+  },[])
 
   function imageQuestion(e) {
     e.preventDefault();
@@ -24,13 +42,30 @@ export default function Create() {
       .then((data) => {
         setImage(data.data);
         console.log(data.data[0].revised_prompt);
+        setThreePrompt(data.data[0].revised_prompt)
         console.log(data.data);
         console.log(data);
         setTestTrigger(data.data[0].url);
+        console.log(data.data[0].url)
         setPrompt("");
       })
       .catch((error) => console.log(error.code));
   }
+
+  function saveImage(e){
+    e.preventDefault()
+    const collectionRef = doc(db, "accounts", email, "images", uuidv4())
+    setDoc(collectionRef, {
+      imageUrl: testTrigger,
+      prompt: !model ? threePrompt : "",
+      id: uuidv4(),
+      model: !model ? "dall-e-3" : "dall-e-2",
+    }).then((data) => {
+      console.log(data)
+    }).catch((error) => console.log(error.code))
+  }
+
+
 
   const modelToggle = () => {
     setModel((prev) => !prev);
@@ -50,6 +85,9 @@ export default function Create() {
                     <div className="image_response_container">
                       <img src={i.url} alt="" />
                     </div>
+                    <button onClick={saveImage}>
+                      <span class="material-symbols-outlined">bookmark</span>
+                    </button>
                   </div>
                 </>
               ))}

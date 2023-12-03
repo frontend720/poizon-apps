@@ -12,7 +12,7 @@ textRouter.post("/", (req, res) => {
 
     messages: [{ role: "user", content: req.body.prompt }],
     model: req.body.model,
-    n: req.body.n
+    n: req.body.n,
   });
   completion
     .then((data) => {
@@ -27,22 +27,50 @@ textRouter.post("/", (req, res) => {
     });
 });
 
-// Save response to database
+// Get a response from a database
 
-textRouter.post("/save", (req, res) => {
-  const textPrompt = {
-    prompt: req.body.prompt
-  };
-  const textRef = db.collection("text-prompts").doc(uuidv4()).set(textPrompt);
-  textRef
-    .then((data) => {
-      if (!data) {
-        return res.status(500).send(new Error("Something went wrong"));
-      } else {
-        res.status(200).send(data);
-      }
+textRouter.get("/:id/:textId", (req, res) => {
+  const emailId = req.params.id;
+  const conversationId = req.params.textId;
+  const collectionRef = db.collection("accounts").doc(emailId);
+  const textReference = collectionRef
+    .collection("conversations")
+    .doc(conversationId)
+    .get();
+  textReference
+    .then((response) => {
+      res.status(200).send(response.data());
     })
-    .catch((error) => console.log(error.code));
+    .catch((error) => {
+      console.log(error.code);
+    });
+});
+
+textRouter.get("/:id", (req, res) => {
+  const emailId = req.params.id;
+  const collectionRef = db
+  .collection("accounts")
+    .doc(emailId)
+    .collection("conversations")
+    .get();
+  collectionRef
+    .then((collection) => {
+      return collection;
+    })
+    .then((doc) => {
+      const docs = []
+      doc.forEach((d) => {
+        if (!d) {
+          return res.status(404).send({ message: "No documents to return" });
+        } else {
+          docs.push(d.data())
+        }
+      });
+      res.status(200).send(docs);
+    })
+    .catch((error) => {
+      return res.status(500).send({ message: error.code });
+    });
 });
 
 module.exports = textRouter;
