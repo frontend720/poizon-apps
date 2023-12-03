@@ -6,6 +6,10 @@
 
 }
 
+iframe{
+  display: none
+}
+
 p{
   padding: 12px 0px
 }

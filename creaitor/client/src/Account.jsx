@@ -4,14 +4,13 @@ import "./AccountStyles.css";
 import { getFirestore } from "firebase/firestore";
 import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
 import { app } from "./config";
-import AccountForm from "./Components/AccountForm"
-
+import AccountForm from "./Components/AccountForm";
 export default function Account() {
   const auth = getAuth(app);
 
   const [userEmail, setUserEmail] = useState("");
   const [createdAt, setCreatedAt] = useState("");
-  const [toggle, setToggle] = useState(false)
+  const [toggle, setToggle] = useState(false);
 
   useEffect(() => {
     onAuthStateChanged(auth, (obj) => {
@@ -20,17 +19,19 @@ export default function Account() {
     });
   }, []);
 
-  function leave(e){
-    e.preventDefault()
-    signOut(auth).then((user) => {
-      console.log(user)
-    }).catch((error) => console.log(error))
+  function leave(e) {
+    e.preventDefault();
+    signOut(auth)
+      .then((user) => {
+        console.log(user);
+      })
+      .catch((error) => console.log(error));
   }
 
-const formToggle = (e) => {
-  e.preventDefault()
-  setToggle(prev => !prev)
-}
+  const formToggle = (e) => {
+    e.preventDefault();
+    setToggle((prev) => !prev);
+  };
 
   return (
     <div>
@@ -38,18 +39,30 @@ const formToggle = (e) => {
       <div className="account_container">
         <div className="account_header">
           <div>
-        <label htmlFor="">{userEmail}</label>
-        <h2>Account</h2>
+            <label htmlFor="">{userEmail}</label>
+            <h2>Account</h2>
           </div>
-          <span onClick={formToggle} style={{fontSize: 12}} class="material-symbols-outlined">{toggle ? "remove" : "add_circle"}</span>
+          <span
+            onClick={formToggle}
+            style={{ fontSize: 12 }}
+            class="material-symbols-outlined"
+          >
+            {toggle ? "remove" : "add_circle"}
+          </span>
         </div>
-        <AccountForm view={toggle ? {display: "block"} : {display: "none"}} />
+        <AccountForm
+          view={toggle ? { display: "block" } : { display: "none" }}
+        />
         <div className="footer">
           <button onClick={leave} className="signout">
-            <span style={{fontSize: 12}} class="material-symbols-outlined">logout</span>
-            <label style={{fontSize: 20}}>Leave</label>
+            <span style={{ fontSize: 12 }} class="material-symbols-outlined">
+              logout
+            </span>
+            <label style={{ fontSize: 20 }}>Leave</label>
           </button>
-          <small style={{textAlign: "right"}} htmlFor="">{createdAt}</small>
+          <small style={{ textAlign: "right" }} htmlFor="">
+            {createdAt}
+          </small>
         </div>
       </div>
     </div>

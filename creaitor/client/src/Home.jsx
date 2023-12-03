@@ -86,7 +86,7 @@ export default function Home() {
     })
       .then((data) => {
         console.log(data);
-        setToggle(data)
+        setToggle(data);
       })
       .catch((error) => {
         setSaveError(error.code);
@@ -154,11 +154,14 @@ export default function Home() {
                       {error}
                     </li>
                     <button disabled={toggle === undefined ? false : true}>
-
-                    <span onClick={saveResponse} class="material-symbols-outlined">favorite</span>
+                      <span
+                        onClick={saveResponse}
+                        class="material-symbols-outlined"
+                      >
+                        favorite
+                      </span>
                     </button>
 
-                    
                     <label htmlFor="">{saveError}</label>
                   </ul>
                 </>

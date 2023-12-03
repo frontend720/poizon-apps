@@ -4,7 +4,7 @@
     left: 0;
     /* width: 100%; */
     height: 100vh;
-    padding: 50px 25px;
+    padding: 150px 25px;
     color: #ffffffa9
 }
 
@@ -33,14 +33,16 @@
     padding-right: 6px;
     color: #ffffffa9;
     margin-top: 24px;
-    margin-bottom: 32px
+    margin-bottom: 32px;
+    min-width: 125px
 }
 
 small{
     color: #ffffffa9;
     position: absolute;
     bottom: 0;
-    padding-bottom: 32px
+    padding-bottom: 32px;
+    font-size: 6px
 }
 
 .account_form{

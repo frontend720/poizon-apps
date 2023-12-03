@@ -19,7 +19,6 @@ function App() {
 
   useEffect(() => {
     onAuthStateChanged(auth, (obj) => {
-
       setToken(obj);
     });
   }, []);
@@ -28,12 +27,12 @@ function App() {
     <Auth />
   ) : (
     <>
-    <Routes>
-      <Route exact path="/" element={<Account />}/>      
-      <Route path="/write" element={<Home/>} />
-      <Route path="/artist" element={<Create />}/>
-      <Route path="/saved" element={<Note />} />
-    </Routes>
+      <Routes>
+        <Route exact path="/" element={<Account />} />
+        <Route path="/write" element={<Home />} />
+        <Route path="/artist" element={<Create />} />
+        <Route path="/saved" element={<Note />} />
+      </Routes>
     </>
   );
 }
