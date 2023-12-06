@@ -10,6 +10,8 @@ export default function Note() {
   const [email, setEmail] = useState("");
   const [responses, setResponses] = useState([]);
 
+  const [isVisible, setIsVisible] = useState(true);
+
   useEffect(() => {
     onAuthStateChanged(auth, (obj) => {
       setEmail(obj.email);
@@ -30,25 +32,39 @@ export default function Note() {
     getNotes();
   }, [email]);
 
+  const bodyToggle = () => {
+    setIsVisible((prev) => !prev);
+  };
+
   return (
     <div className="" style={{ paddingTop: 120 }}>
       <Nav />
       <table>
         {responses.map((doc) => (
-          <table style={{ color: "#fffffa9", width: "100%", padding: 30 }}>
+          <table style={{ color: "#211f1f", width: "100%", padding: 30 }}>
             <tr
               style={{
-                color: "#ffffffa7",
+                color: "#d0bfbf",
                 textAlign: "right",
                 width: "100%",
-                padding: "24px 0px",
+                padding: "24px 8px",
               }}
             >
-              <th style={{ color: "#fffffa9 !important", padding: "24px 0px" }}>
-                {doc.question}
+              <th
+                style={{
+                  color: "#f2dede !important",
+                  padding: "8px 4px",
+                  borderRadius: 5,
+                  display: "flex",
+                  flexDirection: "row",
+                  alignItems: "center"
+                }}
+              >
+                <p style={{fontSize: 16}} onClick={bodyToggle} class="material-symbols-outlined">{!isVisible ? "visibility" : "visibility_off"}</p>
+                <td>{doc.question}</td>
               </th>
             </tr>
-            <tr style={{ color: "#ffffff75" }}>
+            <tr style={ isVisible ? { color: "#ffffff75" } : {display: "none"}}>
               <td>
                 <Markdown>{doc.response}</Markdown>
               </td>

@@ -118,17 +118,23 @@ export default function Create() {
         >
           <div>
             <form action="">
+              <div className="images_to_edit_container">
+                <img src={mask} alt="" />
+                <img src={imageToEdit} alt="" />
+              </div>
               <input
                 name="editPrompt"
                 value={editPrompt}
                 onChange={(e) => setEditPrompt(e.target.value)}
                 type="text"
+                className="preview_images"
               />
               <input
                 type="text"
                 name="mask"
                 value={mask}
                 onChange={(e) => setMask(e.target.value)}
+                className="preview_images"
               />
               <input
                 type="text"

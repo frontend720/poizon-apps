@@ -304,3 +304,14 @@ textarea:focus{
   flex-direction: row;
   ;
 }
+
+.images_to_edit_container{
+  display: grid;
+  /* width: 100%; */
+  grid-template-columns: repeat(2, 25%);
+  grid-gap: 8px
+}
+
+.preview_images{
+  width: 100%
+}
