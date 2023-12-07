@@ -6,7 +6,7 @@ const openai = require("./aiConfig");
 const db = require("./firebaseConfig");
 const morgan = require("morgan");
 
-const PORT = process.env.PORT;
+const PORT = 4500;
 
 app.use(morgan("dev"));
 

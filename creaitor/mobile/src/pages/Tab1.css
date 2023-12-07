@@ -1,3 +1,7 @@
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Flow+Circular&family=IBM+Plex+Mono:wght@600&display=swap');
+
+
 :root{
     --background-tab-one: #444444
 }
@@ -12,6 +16,14 @@ ion-item{
     /* background-color: aqua !important; */
     --border-width: 0px !important;
     --background: none
+}
+
+ion-content{
+  
+    --background: #B6BBC4 !important;
+    
+    height: 100%;
+    width: 100%
 }
 
 .container{
@@ -73,7 +85,8 @@ code{
     background-color: #444444;
     padding: 4px;
     color: #ffffffd7;
-    font-family: monospace;
+    /* font-family: monospace; */
+    font-family: 'IBM Plex Mono', monospace !important;
     width: 100%
 }
 
@@ -86,4 +99,19 @@ pre{
 .quest_card{
     padding: 0px !important;
     
+}
+
+.loadingText{
+    font-family: 'Flow Circular', monospace !important;
+    /* padding: 24px; */
+    font-size: 30px;
+    width: 90%;
+    color: #444444;
+    opacity: .25
+}
+
+.feed_container{
+    width: 90%;
+    margin: 0  auto;
+    max-height: 250px
 }

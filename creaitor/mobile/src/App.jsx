@@ -75,22 +75,23 @@ const App = () => (
           </IonRouterOutlet>
 
           <IonTabBar
-            style={{ width: "90%", margin: "16px auto" }}
+            // style={{ width: "90%", margin: "16px auto" }}
             slot="bottom"
             mode="ios"
             translucent="true"
           >
             <IonTabButton tab="tab1" href="/tab1">
-              <IonIcon aria-hidden="true" icon={colorWandOutline} />
-              <IonLabel>Ask</IonLabel>
+            <span style={{fontSize: 30}} class="material-symbols-rounded">question_answer</span>
+              <IonLabel>Converse</IonLabel>
             </IonTabButton>
             <IonTabButton tab="tab3" href="/tab3">
-              <IonIcon aria-hidden="true" icon={heartOutline} />
-              <IonLabel>Saved</IonLabel>
+              {/* <IonIcon aria-hidden="true" icon={heartOutline} /> */}
+              <span style={{fontSize: 30}} class="material-symbols-rounded">palette</span>
+              <IonLabel>Create</IonLabel>
             </IonTabButton>
             <IonTabButton tab="tab4" href="/tab4">
-              <IonIcon aria-hidden="true" icon={cogOutline} />
-              <IonLabel>Account</IonLabel>
+            <span style={{fontSize: 30}} class="material-symbols-rounded">settings_heart</span>
+              <IonLabel>Customize</IonLabel>
             </IonTabButton>
           </IonTabBar>
         </IonTabs>

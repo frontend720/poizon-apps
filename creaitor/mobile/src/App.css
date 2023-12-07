@@ -19,9 +19,18 @@
     --padding-bottom: 2px !important
   }
   ion-tab-bar{
-    background: #637E76;
-    padding-bottom: 0px;
+    background: #0B666A;
+    /* padding-bottom: 0px;
     padding: 4px;
     border-radius: 15px;
-    margin-bottom: 30px !important
+    margin-bottom: 30px !important */
+  }
+
+  ion-toolbar{
+    --background: #0B666A
+  }
+
+  ion-textarea:focus{
+    outline: none;
+    border: 1px solid olivedrab !important
   }

@@ -1,4 +1,4 @@
-import {getApp} from "firebase/app"
+import {initializeApp} from "firebase/app"
 
 const config = {
     apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
@@ -11,6 +11,6 @@ const config = {
     measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID
 }
 
-const app = getApp(config)
+const app = initializeApp(config)
 
 export default app

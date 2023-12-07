@@ -22,7 +22,8 @@ textRouter.post("/", (req, res) => {
     model: req.body.model,
     n: req.body.n,
     temperature: req.body.temperature,
-    max_tokens: 4000,
+    max_tokens: 4000
+    // stream:  true
   });
   completion
     .then((data) => {

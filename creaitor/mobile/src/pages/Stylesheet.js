@@ -30,8 +30,18 @@ const StyledIonTextarea = styled.textarea`
   width: 100%;
   margin-right: 8px;
   margin-bottom: 4px;
-  bottom: 0
+  bottom: 0;
+  background: #ffffffd7;
+  border-radius: 10px;
+  border: none;
+  color: #444444
 `;
 
+const DummyText = styled.h1`
+font-family: ${({font}) => font ? font : "Arial, Helvetica, sans-serif"};
+content: ${({content}) => content ? content : ""};
+margin-top: 200px
+`
 
-export { Form, StyledIonItem, StyledIonTextarea, StyledImage };
+
+export { Form, StyledIonItem, StyledIonTextarea, StyledImage, DummyText };

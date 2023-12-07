@@ -71,9 +71,6 @@ function modelToggle(){
         <IonToolbar>
           <IonCardSubtitle slot="end">Image Generation</IonCardSubtitle>
         </IonToolbar>
-      </IonHeader>
-      <IonContent>
-        <div className="">
           <IonSegment
           onClick={modelToggle}         
             value={imageModel === true ? two : three}
@@ -85,6 +82,9 @@ function modelToggle(){
               <IonLabel style={{textTransform: "uppercase"}}>{three}</IonLabel>
             </IonSegmentButton>
           </IonSegment>
+      </IonHeader>
+      <IonContent>
+        <div className="">
             {
              <StyledImage src={image} />
             }
