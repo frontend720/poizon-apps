@@ -49,7 +49,7 @@ export default function Homepage() {
       <Container color="#e8e8e8">
         <InputContainer>
           <Heading color="dimgrey">Home</Heading>
-          <span style={{ color: "dimgrey" }} class="material-symbols-outlined">
+          <span style={{ color: "dimgrey" }} className="material-symbols-outlined">
             home
           </span>
         </InputContainer>
@@ -57,7 +57,7 @@ export default function Homepage() {
           <Input type="text" />
           <span
             style={{ color: "mediumslateblue", paddingLeft: 16 }}
-            class="material-symbols-outlined input-icon"
+            className="material-symbols-outlined input-icon"
           >
             send
           </span>

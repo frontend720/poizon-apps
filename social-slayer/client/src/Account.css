@@ -1,0 +1,17 @@
+.account_header{
+    padding: 48px;
+    background: rgba(153, 205, 50, 0.144);
+    border-radius: 15px
+}
+.account_section{
+    padding: 48px;
+    background: rgba(222, 184, 135, 0.144);
+    border-radius: 15px;
+    margin: 14px 0px
+   
+}
+.account_footer{  
+    padding: 48px;
+    background: rgba(225, 215, 250, 0.145);
+    border-radius: 15px
+}

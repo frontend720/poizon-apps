@@ -1,12 +1,13 @@
 import React from "react";
 import { Wrapper, Container } from "./Stylesheet";
 import { Link } from "react-router-dom";
+import Announcement from "./Announcement";
 
 export default function Messages() {
   return (
     <Wrapper display="grid" columns="5% 2fr 25%">
       <Container color="#444444">
-      <header
+        <header
           style={{
             width: "5%",
             height: 75,
@@ -23,24 +24,30 @@ export default function Messages() {
           <h1 style={{ color: "#444444" }}>m</h1>
         </header>
         <div className="icon_container">
-
-        <Link to="/">
-          <span className="material-symbols-outlined nav_icons">home</span>
-        </Link>
-        <Link to="/assistant">
-          <span className="material-symbols-outlined nav_icons ">
-            smart_toy
+          <Link to="/">
+            <span className="material-symbols-outlined nav_icons">home</span>
+          </Link>
+          <Link to="/assistant">
+            <span className="material-symbols-outlined nav_icons ">
+              smart_toy
+            </span>
+          </Link>
+          <span className="material-symbols-outlined nav_icons filled-icon">
+            chat
           </span>
-        </Link>
-        <span className="material-symbols-outlined nav_icons filled-icon">
-          chat
-        </span>
-        <Link to="/account">
-          <span className="material-symbols-outlined nav_icons">person</span>
-        </Link>
+          <Link to="/account">
+            <span className="material-symbols-outlined nav_icons">person</span>
+          </Link>
         </div>
       </Container>
-      <Container color="#ededed"></Container>
+      <Container color="#ededed">
+        <Announcement
+          text="Get ready to laugh and learn like never before! The collaborative AI
+        assistant is coming soon, ready to unlock a world of boundless knowledge
+        and delightful conversations. Subscribe now and be among the first to
+        experience limitless possibilities!"
+        />
+      </Container>
       <Container color="#444444"></Container>
     </Wrapper>
   );

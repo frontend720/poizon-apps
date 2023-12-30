@@ -1,3 +1,7 @@
+
+.container_class::-webkit-scrollbar {
+  display: none;
+}
 .icon_container{
   display: flex;
   flex-direction: column;
@@ -23,6 +27,31 @@
 .nav_icons{
   margin: 32px 0px;
   font-size: 30px;
-  color: #e8e8e8
+  color: #444444
+}
+
+.flex_container{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between
+}
+
+p{
+  font-weight: 300;
+  font-size: 15px
+}
+
+pre{
+  padding: 16px;
+  background: #444444df !important;
+  color: #f3f3f3;
+  border-radius: 10px;
+  font-size: 14px;
+  overflow-x: scroll;
+}
+
+ol{
+  font-size: 16px
 }
 
