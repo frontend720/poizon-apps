@@ -10,14 +10,13 @@ import app from "./config";
 import {getAuth, onAuthStateChanged} from "firebase/auth"
 
 function App() {
-  console.log(app)
+
 
   const auth = getAuth(app)
   const [authObj, setAuthObj] = useState()
 
   useEffect(() => {
     onAuthStateChanged(auth, (obj) => {
-      console.log(obj)
       setAuthObj(obj)
     })
   },[])

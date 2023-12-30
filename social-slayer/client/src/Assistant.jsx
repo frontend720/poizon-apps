@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Wrapper,
   Container,
@@ -24,15 +24,37 @@ export default function Assistant() {
   const [question, setQuestion] = React.useState("");
   const [questions, setQuestions] = React.useState([question]);
   const [responses, setResponses] = React.useState([response]);
-  const [collectionId, setCollectionId] = React.useState(uuidv4())
+  const [collectionId, setCollectionId] = React.useState(uuidv4());
   // const [toggle, setToggle] = React.useState(question);
   const [userId, setUserId] = React.useState();
   const [toggle, setToggle] = React.useState(true);
   const [saveResponse, setSaveResponse] = React.useState("");
-  // const [botName, setBotname] = React.useState();
-  // const [botTone, setBotTone] = React.useState();
 
   const auth = getAuth(app);
+
+  const title = "chucky cheese";
+  const artist = "qveen herby"
+
+  useEffect(() => {
+    const options = {
+      method: "GET",
+      url: "https://deezerdevs-deezer.p.rapidapi.com/search",
+      params: {
+        q: `${title},${artist}`,
+      },
+      headers: {
+        "X-RapidAPI-Key": process.env.REACT_APP_DEEZER_API_KEY,
+        "X-RapidAPI-Host": "deezerdevs-deezer.p.rapidapi.com",
+      },
+    };
+
+    const response = axios.request(options);
+    response
+      .then((response) => {
+        console.log(response.data);
+      })
+      .catch((error) => console.log(error));
+  }, []);
 
   const db = getFirestore(app);
 
@@ -92,7 +114,7 @@ export default function Assistant() {
         system: response,
         user: question,
         accountId: userId,
-        conversationId: uuidv4()
+        conversationId: uuidv4(),
       },
     };
     axios(request)
