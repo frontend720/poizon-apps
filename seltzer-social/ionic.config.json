@@ -1,7 +1,0 @@
-{
-  "name": "seltzer-social",
-  "integrations": {
-    "capacitor": {}
-  },
-  "type": "react-vite"
-}
