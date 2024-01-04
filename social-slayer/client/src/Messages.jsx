@@ -5,11 +5,11 @@ import Announcement from "./Announcement";
 
 export default function Messages() {
   return (
-    <Wrapper display="grid" columns="5% 2fr 25%">
+    <Wrapper display="grid" columns="10% 1fr">
       <Container color="#444444">
         <header
           style={{
-            width: "5%",
+            width: "10%",
             height: 75,
             background: "#e8e8e8",
             margin: "0px !important",
@@ -48,7 +48,6 @@ export default function Messages() {
         experience limitless possibilities!"
         />
       </Container>
-      <Container color="#444444"></Container>
     </Wrapper>
   );
 }

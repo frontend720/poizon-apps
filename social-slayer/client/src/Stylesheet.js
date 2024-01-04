@@ -44,7 +44,7 @@ const Form = styled.form`
     display: flex;
     flex-direction: row;
     align-items: center;
-    width: 70%;
+    width: 80%;
     position: fixed;
     bottom: 0
 `

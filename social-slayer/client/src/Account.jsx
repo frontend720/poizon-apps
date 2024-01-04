@@ -1,11 +1,28 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import { Wrapper, Container } from "./Stylesheet";
 import { Link } from "react-router-dom";
+import { onAuthStateChanged, getAuth, signOut } from "firebase/auth";
+import app from "./config";
 import "./Account.css"
 
+
 export default function Account() {
+  const [userId, setUserId] = useState("")
+  const auth = getAuth(app)
+
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      setUserId(user.uid)
+    })
+  }, [])
+
+  const signout = (e) => {
+    e.preventDefault()
+    signOut(auth)
+  }
+
   return (
-    <Wrapper display="grid" columns="10% 2fr 25%">
+    <Wrapper display="grid" columns="10% 1fr">
       <Container color="#444444">
         <Link to="/">
           <span className="material-symbols-outlined nav_icons">home</span>
@@ -27,10 +44,13 @@ export default function Account() {
     <h1>Account</h1>
       <header className="account_header"></header>
       <section className="account_section"></section>
-      <footer className="account_footer"></footer>
+      <footer className="account_footer">
+        <p style={{cursor: "pointer"}} onClick={signout} htmlFor="">logout</p>
+        <small style={{fontSize: 10}}>member ID: {userId}</small>
+      </footer>
         </div>
       </Container>
-      <Container color="#444444"></Container>
+
     </Wrapper>
   );
 }

@@ -17,46 +17,18 @@ import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { onAuthStateChanged, getAuth } from "firebase/auth";
 import app from "./config";
-import { getFirestore, setDoc, doc } from "firebase/firestore";
 
 export default function Assistant() {
   const [response, setResponse] = React.useState([]);
   const [question, setQuestion] = React.useState("");
-  const [questions, setQuestions] = React.useState([question]);
+  const [questions, setQuestions] = React.useState([]);
   const [responses, setResponses] = React.useState([response]);
-  const [collectionId, setCollectionId] = React.useState(uuidv4());
-  // const [toggle, setToggle] = React.useState(question);
   const [userId, setUserId] = React.useState();
   const [toggle, setToggle] = React.useState(true);
   const [saveResponse, setSaveResponse] = React.useState("");
+  const [context, setContext] = React.useState("");
 
   const auth = getAuth(app);
-
-  const title = "chucky cheese";
-  const artist = "qveen herby"
-
-  useEffect(() => {
-    const options = {
-      method: "GET",
-      url: "https://deezerdevs-deezer.p.rapidapi.com/search",
-      params: {
-        q: `${title},${artist}`,
-      },
-      headers: {
-        "X-RapidAPI-Key": process.env.REACT_APP_DEEZER_API_KEY,
-        "X-RapidAPI-Host": "deezerdevs-deezer.p.rapidapi.com",
-      },
-    };
-
-    const response = axios.request(options);
-    response
-      .then((response) => {
-        console.log(response.data);
-      })
-      .catch((error) => console.log(error));
-  }, []);
-
-  const db = getFirestore(app);
 
   React.useEffect(() => {
     onAuthStateChanged(auth, (obj) => {
@@ -68,9 +40,9 @@ export default function Assistant() {
     e.preventDefault();
     const request = {
       method: "POST",
-      url: "http://localhost:5200/new",
+      url: `${process.env.REACT_APP_PORT}/new`,
       data: {
-        prompt: JSON.stringify(response) + question,
+        prompt: JSON.stringify(context) + question,
         bot_name: "DeAndre",
         tone: "friendly, expressive",
         userId: userId,
@@ -80,7 +52,8 @@ export default function Assistant() {
     axios(request)
       .then((res) => {
         console.log(res.data);
-        setResponse((prev) => [...prev, res.data[0].message.content]);
+        setResponse((prev) => [...prev, question, res.data[0].message.content]);
+        setQuestions((prev) => [question]);
         setSaveResponse(res.data[0].message.content);
         setQuestion("");
         setToggle((prev) => !prev);
@@ -94,22 +67,37 @@ export default function Assistant() {
         }
       })
       .catch((error) => {
-        console.log(error);
+        console.log(error.response);
       });
-    setQuestions((prev) => [...prev, question]);
+    // setQuestions((prev) => [...prev, question]);
     setResponses((prev) => [...prev, response]);
   };
 
+  const thread = () => {
+    const request = {
+      method: "POST",
+      url: `${process.env.REACT_APP_PORT}/create-thread`,
+      data: {
+        thread: JSON.stringify(response) + question,
+      },
+    };
+    axios
+      .request(request)
+      .then((res) => {
+        setContext(res.data);
+        console.log(context);
+      })
+      .catch((error) => console.log(error.code));
+  };
+
   React.useEffect(() => {
-    if (responses === "") {
-      save();
-    }
-  }, [saveResponse]);
+    thread();
+  }, [toggle]);
 
   const save = () => {
     const request = {
       method: "POST",
-      url: "http://localhost:5200/save",
+      url: `${process.env.REACT_APP_PORT}/save`,
       data: {
         system: response,
         user: question,
@@ -128,7 +116,7 @@ export default function Assistant() {
     e.preventDefault();
     setResponse([]);
     setQuestions([undefined]);
-    // setCollectionId()
+    setContext("");
   };
 
   return (
@@ -143,13 +131,13 @@ export default function Assistant() {
     >
       <Wrapper
         display="grid"
-        columns="5% 2fr 25%"
+        columns="10% 1fr"
         style={{ height: "20vh !important" }}
       >
         <Container width="" style={{ left: 0 }} color="#444444">
           <header
             style={{
-              width: "5%",
+              width: "10%",
               height: 75,
               background: "#e8e8e8",
               margin: "0px !important",
@@ -192,46 +180,44 @@ export default function Assistant() {
                 smart_toy
               </span>
             </InputContainer>
-            <div
-              style={
-                question === null
-                  ? { display: "none" }
-                  : {
-                      background: "#e2f3f5",
-                      padding: 16,
-                      marginBottom: 32,
-                      borderRadius: 5,
-                      paddingBottom: 80,
-                      display: "block",
-                    }
-              }
-            >
-              <ul>
-                {response.map((data) => (
-                  <Markdown key={uuidv4()} remarkPlugins={remarkGfm}>
-                    {/* <li key={uuidv4()}>
-                      <p style={{ fontWeight: 300 }}> */}
-                    {data}
-                    {/* </p>
-                    </li> */}
-                  </Markdown>
-                ))}
-              </ul>
-              <div className="flex_container">
-                <small style={{ align: "right" }}>
-                  {questions[response.length]}{" "}
-                </small>
-                <h2 style={{ color: "#954535 " }} onClick={resetConversation}>
-                  <PiBroom />
-                </h2>
+            <div style={{ paddingBottom: 60 }}>
+              <div
+                style={
+                  question === null
+                    ? { display: "none" }
+                    : {
+                        background: "#4b50511f",
+                        padding: 16,
+                        borderRadius: 5,
+                        display: "block",
+                      }
+                }
+              >
+                <div>
+                  {response.map((data) => (
+                    <Markdown key={uuidv4()} remarkPlugins={remarkGfm}>
+                      {data}
+                    </Markdown>
+                  ))}
+                </div>
+                <div className="flex_container"></div>
               </div>
+              <h2
+                style={{
+                  color: "#954535 ",
+                  textAlign: "right",
+                  paddingBottom: 30,
+                }}
+                onClick={resetConversation}
+              >
+                <PiBroom />
+              </h2>
             </div>
             <Form action="">
-              {/* <Input type="text" /> */}
-              {/* <button onClick={save}>save me please</button> */}
               <TextareaAutosize
                 name="question"
                 value={question}
+                maxRows="6"
                 onChange={(e) => setQuestion(e.target.value)}
                 style={{
                   width: "100%",
@@ -257,12 +243,6 @@ export default function Assistant() {
             </Form>
           </Heading>
         </Container>
-        <Container
-          style={{ right: 0 }}
-          position="fixed"
-          width="300px"
-          color="#444444"
-        ></Container>
       </Wrapper>
     </div>
   );
