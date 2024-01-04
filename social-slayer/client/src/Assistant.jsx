@@ -27,6 +27,7 @@ export default function Assistant() {
   const [toggle, setToggle] = React.useState(true);
   const [saveResponse, setSaveResponse] = React.useState("");
   const [context, setContext] = React.useState("");
+  const [searchToggle, setSearchToggle] = React.useState(true)
 
   const auth = getAuth(app);
 
@@ -36,11 +37,13 @@ export default function Assistant() {
     });
   }, []);
 
+const port = "https://37ef-2605-a601-a9d0-9200-e0a7-2227-54a3-ccdb.ngrok-free.app"
+
   const chat = (e) => {
     e.preventDefault();
     const request = {
       method: "POST",
-      url: `${process.env.REACT_APP_PORT}/new`,
+      url: `${port}/new`,
       data: {
         prompt: JSON.stringify(context) + question,
         bot_name: "DeAndre",
@@ -57,6 +60,8 @@ export default function Assistant() {
         setSaveResponse(res.data[0].message.content);
         setQuestion("");
         setToggle((prev) => !prev);
+        setSearchToggle()
+        // keyboardToggle()
         const id = uuidv4();
         if (!res.data) {
           console.log("No data to save");
@@ -76,7 +81,7 @@ export default function Assistant() {
   const thread = () => {
     const request = {
       method: "POST",
-      url: `${process.env.REACT_APP_PORT}/create-thread`,
+      url: `${port}/create-thread`,
       data: {
         thread: JSON.stringify(response) + question,
       },
@@ -118,6 +123,12 @@ export default function Assistant() {
     setQuestions([undefined]);
     setContext("");
   };
+
+  const keyboardToggle = () => {
+
+setSearchToggle(prev => !prev)
+
+  }
 
   return (
     <div
@@ -180,7 +191,7 @@ export default function Assistant() {
                 smart_toy
               </span>
             </InputContainer>
-            <div style={{ paddingBottom: 60 }}>
+            <div style={{ paddingBottom: 110 }}>
               <div
                 style={
                   question === null
@@ -194,6 +205,20 @@ export default function Assistant() {
                 }
               >
                 <div>
+                  <div
+                    onClick={resetConversation}
+                    style={{ width: "100% !important", alignContent: "right" }}
+                  >
+                    <label
+                      style={{
+                        color: "#954535 ",
+                        textAlign: "right",
+                        paddingBottom: 30,
+                      }}
+                    >
+                      <PiBroom />
+                    </label>
+                  </div>
                   {response.map((data) => (
                     <Markdown key={uuidv4()} remarkPlugins={remarkGfm}>
                       {data}
@@ -202,44 +227,35 @@ export default function Assistant() {
                 </div>
                 <div className="flex_container"></div>
               </div>
-              <h2
-                style={{
-                  color: "#954535 ",
-                  textAlign: "right",
-                  paddingBottom: 30,
-                }}
-                onClick={resetConversation}
-              >
-                <PiBroom />
-              </h2>
             </div>
             <Form action="">
-              <TextareaAutosize
-                name="question"
-                value={question}
-                maxRows="6"
-                onChange={(e) => setQuestion(e.target.value)}
-                style={{
-                  width: "100%",
-                  borderRadius: 10,
-                  padding: 12,
-                  fontSize: 16,
-                  resize: "none",
-                  marginBottom: "36px",
-                  borderWidth: 4,
-                }}
-              />
-              <span
-                onClick={chat}
-                style={{
-                  color: "mediumslateblue",
-                  paddingLeft: 16,
-                  cursor: "pointer",
-                }}
-                className="material-symbols-outlined input-icon"
-              >
-                send
-              </span>
+              <div style={searchToggle ? {display: ""} : {display: "none"}}  onSubmit={chat} className="textarea_container">
+               
+
+                <TextareaAutosize
+                  name="question"
+                  value={question}
+                  maxRows="6"
+                  onChange={(e) => setQuestion(e.target.value)}
+                  className="textarea"
+                  style={{
+                    width: "100%",
+                    // borderRadius: 10,
+                    padding: 12,
+                    fontSize: 16,
+                    resize: "none",
+                    marginBottom: "36px",
+                    borderWidth: 0,
+                  }}
+                />
+                <>
+
+                <span onClick={chat}  className="material-symbols-outlined send">send</span>
+                </>
+              
+              </div>
+
+              <span onClick={keyboardToggle} style={searchToggle ? {display: "none"} : {display: "block"}} class="material-symbols-outlined keyboard">keyboard</span>
             </Form>
           </Heading>
         </Container>
@@ -247,3 +263,18 @@ export default function Assistant() {
     </div>
   );
 }
+
+//  <div style={{background: "red  !important", padding: 6}}>
+
+// <span
+// onClick={chat}
+// style={{
+//   color: "yellow",
+//   paddingLeft: 16,
+//   cursor: "pointer",
+// }}
+// className="material-symbols-outlined input-icon"
+// >
+// send
+// </span>
+// </div>
