@@ -87,7 +87,7 @@ export default function Authentication() {
         action=""
       >
         <div className="flex">
-          <span className="material-symbols-outlined">mail</span>
+          {/* <span className="material-symbols-outlined">mail</span> */}
           <input
             placeholder="email"
             className="auth_inputs"
@@ -98,7 +98,7 @@ export default function Authentication() {
           />
         </div>
         <div className="flex">
-          <span className="material-symbols-outlined">lock</span>
+          {/* <span className="material-symbols-outlined">lock</span> */}
           <input
             placeholder="password"
             className="auth_inputs"
@@ -117,7 +117,7 @@ export default function Authentication() {
             : ""}
         </label>
         <button className="auth_button" type="submit">
-          continue
+        {authToggle ? "Get started" : "Welcome back"}
         </button>
         <p onClick={toggle} htmlFor="">
           {authToggle ? "Already a member" : "Signup here"}

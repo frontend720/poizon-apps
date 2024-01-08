@@ -13,17 +13,16 @@ routes.post("/new", (req, res) => {
     messages: [
       {
         role: "system",
-        content: `It is currently ${req.body.systime} and you are an AI assistant called ${req.body.bot_name} and your job is to accurately respond to this prompt in a ${req.body.tone}, conversational manner${req.body.prompt}`,
+        content: `It is currently ${req.body.systime} and you are a conversational AI assistant called ${req.body.bot_name} and your job is to accurately respond to this prompt ${req.body.tone}, in a concise, conversational manner${req.body.prompt}. - take note of user conversational style if any, and mimic it. if question or prompt falls outside of usage policies, gently guide conversation back to the outer limits of allowable usage policies.`,
       },
     ],
-    temperature: 1,
+    temperature: 0,
     n: 1,
-    model: "gpt-4-1106-preview",
-    max_tokens: 1500,
+    model: "gpt-4-0613",
     user: req.body.userId,
   });
 
-// 
+  //
 
   chatReference
     .then((data) => {
@@ -38,32 +37,38 @@ routes.post("/new", (req, res) => {
     });
 });
 
-routes.post("/create-thread", (req, res) => {
-  const chatReference = openai.chat.completions.create({
-    messages: [
-      {
-        role: "system",
-        content: `summarize this request in under 1000 tokens, ${req.body.thread} in a question and answer format`,
-      },
-    ],
-    temperature: 0.25,
-    n: 1,
-    model: "gpt-3.5-turbo",
-    max_tokens: 800,
-  });
-
-  chatReference
-    .then((data) => {
-      if (!data) {
-        res.status(404).send({ message: "Try again..." });
-      } else {
-        res.status(200).send(data.choices);
-      }
-    })
-    .catch((error) => {
-      res.status(500).send({ message: error.code });
-    });
-});
+// routes.post("/create-thread", (req, res) => {
+//   const reference = openai.chat.completions.create({
+//     messages: [
+//       {
+//         role: "system",
+//         content: `Summarize Past Turns in conversational format: Briefly summarize the previous each user and system turn within the chat prompt. This refreshes the model's memory and provides necessary context .
+//         Keyword Mentions: Include relevant keywords and entities discussed earlier in the prompt. This helps the model associate new information with the existing context.
+//         Conditional Statements: Use conditional statements in the prompt to control the model's focus. For example, "If the user mentioned cats earlier, prioritize responses related to pets."
+//         apply consistant formatting to summaries throughout chat.
+//         `,
+//       },
+//       {
+//         role: "user",
+//         content: req.body.thread,
+//       },
+//     ],
+//     temperature: 0,
+//     model: "gpt-3.5-turbo",
+//     n: 1,
+//   });
+//   reference
+//     .then((response) => {
+//       if (!response.id) {
+//         res.status(400).send({ message: "Invalid conversation ID" });
+//       } else {
+//         res.status(200).send(response.choices);
+//       }
+//     })
+//     .catch((error) => {
+//       res.status(500).send({ message: error.message });
+//     });
+// });
 
 // routes.post("/playlists", (req, res) => {
 //   // playlist builder ai if given a genre will respond with n songs with their artists with a uuid attached
@@ -116,3 +121,5 @@ routes.post("/save", (req, res) => {
 });
 
 module.exports = routes;
+
+//your job is to analyze the provided text and then, in **-** list format generate a detailed chronological summary for conversation context purposes: - (List and retain all the topics of decisions from the conversation) - (Summarize all actions or choices agreed upon) - (Highlight and retain all significant facts or details shared, dates, locations, or names/relationships) - (Highlight and retain all storyline choices, personal details - (Match summary style to conversation style and retain through out life of summary) - (Highlight the literary style))

@@ -123,39 +123,16 @@ function getPlaylistFromDeezer(){
         </InputContainer>
         <Form action="">
           <Input type="text" />
-          <span
+          {/* <span
             style={{ color: "mediumslateblue", paddingLeft: 16 }}
             className="material-symbols-outlined input-icon"
           >
             send
-          </span>
+          </span> */}
         </Form>
-        <h4>listen while you chat, your some shit</h4>
+        {/* <h4>listen while you chat, your some shit</h4> */}
         <label htmlFor="">powered by deezer</label>
-        <form onSubmit={getPlaylist} action="">
-          <input
-            type="text"
-            name="genre"
-            value={genre}
-            onChange={(e) => setGenre(e.target.value)}
-            placeholder="Genre"
-          />
-          <input
-            type="text"
-            name="artist"
-            value={artist}
-            onChange={(e) => setArtist(e.target.value)}
-            placeholder="Artist"
-          />
-          <input
-            type="text"
-            name="mood"
-            value={mood}
-            onChange={(e) => setMood(e.target.value)}
-            placeholder="Mood"
-          />
-          <button>Fetch</button>
-        </form>
+ 
         <div>
           <ul>
             {response.map((data) => (
