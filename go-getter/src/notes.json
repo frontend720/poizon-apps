@@ -1,0 +1,62 @@
+[
+  {
+    "id": 1,
+    "title": "Grocery List",
+    "content": "Milk, eggs, bread, bananas, cereal, apples, coffee beans, cheese, pasta sauce, toilet paper",
+    "type": "reminder"
+  },
+  {
+    "id": 2,
+    "title": "Book Club Idea",
+    "content": "Suggest 'The Midnight Library' by Matt Haig for next month's meeting",
+    "type": "idea"
+  },
+  {
+    "id": 3,
+    "title": "Daily Affirmation",
+    "content": "I am capable, confident, and open to new possibilities.",
+    "type": "motivation"
+  },
+  {
+    "id": 4,
+    "title": "Trip Planning",
+    "content": "Research hotels and activities for the upcoming trip to Seattle. Check flight prices.",
+    "type": "to-do"
+  },
+  {
+    "id": 5,
+    "title": "Quote to Remember",
+    "content": "'The only way to do great work is to love what you do.' - Steve Jobs",
+    "type": "inspiration"
+  },
+  {
+    "id": 6,
+    "title": "Gift Ideas for Mom's Birthday",
+    "content": "New scarf, gardening tools, personalized mug, book subscription",
+    "type": "list"
+  },
+  {
+    "id": 7,
+    "title": "Funny Joke to Share",
+    "content": "Why did the scarecrow win an award? Because he was outstanding in his field!",
+    "type": "humor"
+  },
+  {
+    "id": 8,
+    "title": "Goal for the Week",
+    "content": "Exercise for 30 minutes at least 3 times this week.",
+    "type": "goal"
+  },
+  {
+    "id": 9,
+    "title": "Random Thought",
+    "content": "What if cats could actually talk? Would they tell us all their secrets?",
+    "type": "thought"
+  },
+  {
+    "id": 10,
+    "title": "Recipe to Try",
+    "content": "Find the recipe for that amazing chocolate cake I saw online.",
+    "type": "reminder"
+  }
+]
