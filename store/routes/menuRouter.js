@@ -3,6 +3,8 @@ const express = require("express");
 const menuRouter = express.Router();
 const { db, app } = require("../config");
 
+// Create a menu item
+
 menuRouter.post("/:merchantId/:restaurantId", (req, res) => {
   const merchant_id = req.params.merchantId;
   const restaurant_id = req.params.restaurantId;
@@ -38,6 +40,34 @@ menuRouter.post("/:merchantId/:restaurantId", (req, res) => {
       res.status(500).send({ message: error.code });
     });
 });
+
+// Retrieve all menu items
+
+menuRouter.get("/:merchant_id/:restaurant_id", (req, res) => {
+  const merchant_id = req.params.merchant_id
+  const restaurant_id = req.params.restaurant_id
+  const restaurantMenu = []
+
+  const collectionRef = db.collection("merchants").doc(merchant_id).collection("restaurants").doc(restaurant_id).collection("menu_item").get();
+  collectionRef.then((menu) => {
+    menu.forEach((item) => {
+      if (!item.exists) {
+        res.status(400).send({message: "Unable to fetch menu"})
+      }if(item.exists){
+        restaurantMenu.push(item.data())
+      }
+    })
+    res.status(200).send(restaurantMenu)
+  }).catch((err) => {
+    res.status(500).send({message: err.message})
+  })
+})
+
+// Retrieve a menu item
+
+
+
+// Delete a menu item
 
 menuRouter.delete("/:merchant_id/:restaurant_id/:menu_id", (req, res) => {
   const merchant_id = req.params.merchant_id;

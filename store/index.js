@@ -13,6 +13,6 @@ app.use("/user", require("./routes/userRouter"))
 app.use("/merchant", require("./routes/merchantRouter"))
 app.use("/payment", require("./routes/paymentRouter"))
 
-app.listen(4200, ()=>{
+app.listen(process.env.PORT, ()=>{
     console.log('listening on port ', 4000)
 } )
