@@ -2,14 +2,16 @@ const { v4: uuid } = require("uuid");
 const express = require("express");
 
 const storefrontRouter = express.Router();
-const { db, app } = require("../config");
+const { db } = require("../config");
 
 console.log(uuid());
+
+// Create restaurant
 
 storefrontRouter.post("/restaurant_info/:merchant_id", (req, res) => {
   const merchant_id = req.params.merchant_id;
   const data = {
-    merchant_id: uuid(),
+    merchant_id: merchant_id,
     restaurant_name: req.body.restaurant_name,
     address: req.body.address,
     phone: req.body.phone,
@@ -19,8 +21,8 @@ storefrontRouter.post("/restaurant_info/:merchant_id", (req, res) => {
     hours: req.body.hours,
   };
   const collectionRef = db
-    .collection("merchants")
-    .doc(merchant_id)
+    // .collection("merchants")
+    // .doc(merchant_id)
     .collection("restaurants")
     .doc(req.body.restaurant_name.replaceAll(" ", "_").toLowerCase())
     .set(data, { merge: true });
@@ -36,6 +38,47 @@ storefrontRouter.post("/restaurant_info/:merchant_id", (req, res) => {
       res.status(500).send({ message: error.code });
     });
 });
+
+// Get a restaurant
+
+storefrontRouter.get("/:restaurant_id", (req, res) => {
+  const restaurantId = req.params.restaurant_id;
+  const collectionRef = db.collection("restaurants").doc(restaurantId).get();
+  collectionRef
+    .then((restaurant) => {
+      if (!restaurant.exists) {
+        res.status(400).send({ message: "Restaurant does not exist" });
+      } else {
+        res.status(200).send(restaurant.data());
+      }
+    })
+    .catch((error) => {
+      res.status(500).send({ message: error.code });
+    });
+});
+
+// Get all restaurants
+
+storefrontRouter.get("/", (req, res) => {
+  const collectionRef = db.collection("restaurants").get();
+  const restaurants = [];
+  collectionRef
+    .then((data) => {
+      data.forEach((restaurant) => {
+        if (!restaurant.exists) {
+          res.status(400).send({ message: "Unable to retrieve restaurants." });
+        } else {
+          restaurants.push(restaurant.data());
+        }
+      });
+      res.send(restaurants);
+    })
+    .catch((error) => {
+      res.status(500).send({ message: error.code });
+    });
+});
+
+// Update restaurant info
 
 storefrontRouter.put("/update/:restaurant_id/:update_id", (req, res) => {
   const restaurant_id = req.params.restaurant_id;
@@ -68,6 +111,8 @@ storefrontRouter.put("/update/:restaurant_id/:update_id", (req, res) => {
     });
 });
 
+// Delete restaurant info
+
 storefrontRouter.delete("/delete/:restaurant_id/:update_id", (req, res) => {
   const restaurant_id = req.params.restaurant_id;
   const update_id = req.params.update_id;
@@ -80,12 +125,10 @@ storefrontRouter.delete("/delete/:restaurant_id/:update_id", (req, res) => {
   collectionRef
     .then((del) => {
       if (!del) {
-        res
-          .status(400)
-          .send({
-            message:
-              "Unable to delete restaurant info right now. Try again later",
-          });
+        res.status(400).send({
+          message:
+            "Unable to delete restaurant info right now. Try again later",
+        });
       } else {
         res.status(200).send(del.writeTime);
       }
