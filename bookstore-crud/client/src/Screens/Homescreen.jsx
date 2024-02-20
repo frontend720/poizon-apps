@@ -4,6 +4,7 @@ import { getFirestore, collection, getDocs } from "firebase/firestore";
 import { app } from "../config";
 import axios from "axios";
 import "./Homescreen.css";
+import Library from "./Library";
 
 export default function Homescreen() {
   const auth = getAuth(app);
@@ -17,14 +18,13 @@ export default function Homescreen() {
   const [location, setLocation] = useState("");
   const [authObj, setAuthObj] = useState("");
   const [request, setRequest] = useState();
+  const [response, setResponse] = useState([]);
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       setAuthObj(user.email);
     });
   });
-
-  // console.log(JSON.stringify(authObj));
 
   function addTitle(e) {
     e.preventDefault();
@@ -57,10 +57,10 @@ export default function Homescreen() {
     querySnapshot
       .then((book) => {
         book.forEach((b) => {
-          // console.log(b.data());
           booksArr.push(b.data());
         });
         console.log(booksArr);
+        setResponse(booksArr);
       })
       .catch((error) => {
         console.log(error);
@@ -73,7 +73,7 @@ export default function Homescreen() {
     } else {
       getInventory();
     }
-  }, [request]);
+  }, [request, authObj]);
 
   return (
     <div>
@@ -141,6 +141,19 @@ export default function Homescreen() {
         </div>
         <button className="entry_button">Add Title</button>
       </form>
+      {response.map((item) => (
+        <div key={item.u_isbn}>
+          <Library
+            title={item.title}
+            description={item.description}
+            genre={item.genre}
+            location={item.location}
+            quantity={item.quantity}
+            price={item.price}
+            book_id={item.book_id}
+          />
+        </div>
+      ))}
     </div>
   );
 }
