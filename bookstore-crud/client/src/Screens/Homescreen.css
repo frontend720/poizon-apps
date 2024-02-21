@@ -1,7 +1,9 @@
 .entry_form{
     display: flex;
     flex-direction: column;
-    padding: 24px
+    padding: 24px;
+    /* position: fixed */
+    
 }
 
 .entry_flex{
@@ -37,5 +39,14 @@
     letter-spacing: 5px;
     background: #444444;
     color: #e8e8e8;
-    border: none
+    border: none;
+
 }
+
+@media screen and (min-width: 800px) { 
+    .grid-container{
+       display: grid;
+       grid-template-columns: 1fr 2fr
+    }
+   
+  }

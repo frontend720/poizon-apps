@@ -19,6 +19,7 @@ export default function Homescreen() {
   const [authObj, setAuthObj] = useState("");
   const [request, setRequest] = useState();
   const [response, setResponse] = useState([]);
+  const [id, setId] = useState()
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
@@ -45,6 +46,11 @@ export default function Homescreen() {
       .then((data) => {
         console.log(data);
         setRequest(data);
+        setTitle("")
+        setDescription("")
+        setLocation("")
+        setQuantity("")
+        setPrice("")
       })
       .catch((error) => console.log(error));
   }
@@ -61,11 +67,14 @@ export default function Homescreen() {
         });
         console.log(booksArr);
         setResponse(booksArr);
+        setId(booksArr.book_id)
       })
       .catch((error) => {
         console.log(error);
       });
   }
+
+  console.log(id)
 
   useEffect(() => {
     if (!authObj) {
@@ -73,11 +82,12 @@ export default function Homescreen() {
     } else {
       getInventory();
     }
-  }, [request, authObj]);
+  }, [request, authObj, id]);
 
   return (
-    <div>
+    <div className="grid-container">
       <form className="entry_form" onSubmit={addTitle} action="">
+        <h1>Entry Form</h1>
         <input
           type="text"
           placeholder="Title"
@@ -141,19 +151,22 @@ export default function Homescreen() {
         </div>
         <button className="entry_button">Add Title</button>
       </form>
-      {response.map((item) => (
-        <div key={item.u_isbn}>
-          <Library
-            title={item.title}
-            description={item.description}
-            genre={item.genre}
-            location={item.location}
-            quantity={item.quantity}
-            price={item.price}
-            book_id={item.book_id}
-          />
-        </div>
-      ))}
+      <div>
+        {response.map((item) => (
+          <div key={item.u_isbn}>
+            <Library
+              title={item.title}
+              description={item.description}
+              genre={item.genre}
+              location={item.location}
+              quantity={item.quantity}
+              price={item.price}
+              book_id={item.book_id}
+              trash={item.book_id}
+            />
+          </div>
+        ))}
+      </div>
     </div>
   );
 }

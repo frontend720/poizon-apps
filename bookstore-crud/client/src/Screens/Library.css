@@ -8,7 +8,8 @@
     margin: 18px auto;
     font-weight: 400;
     font-style: normal;
-    
+  
+   
 }
 
 .segment{
@@ -28,9 +29,9 @@
     font-size: 20px
 }
 
-small{
+.barcode{
     /* text-align: center; */
-    font-size: 24px;
+    /* font-size: 24px; */
     font-family: "Libre Barcode 128", system-ui;
     margin: 12px 0px
 }
@@ -40,4 +41,10 @@ small{
     font-weight: 200;
     font-family: "Poppins", sans-serif;
     font-size: 14px
+}
+
+.delete-button{
+    background:none;
+    border:none;
+    color: orangered
 }
