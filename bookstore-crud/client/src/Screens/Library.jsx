@@ -13,11 +13,14 @@ export default function Library({
   quantity,
   book_id,
   trash,
+  deleteItem,
 }) {
   const [request, setRequest] = useState();
   const [authObj, setAuthObj] = useState();
 
   const auth = getAuth(app);
+
+  console.log(trash);
 
   useEffect(() => {
     onAuthStateChanged(auth, (obj) => {
@@ -34,17 +37,18 @@ export default function Library({
       },
     })
       .then((data) => {
-        console.log(data);
-        setRequest(data);
+        console.log(data.status);
+        setRequest(data.status);
       })
       .catch((error) => console.log(error));
   }
 
-  console.log(trash);
-
   return (
     <div>
-      <div className="card">
+      <div
+        style={request === undefined ? { display: "block" } : { display: "none" }}
+        className="card"
+      >
         <div className="segment">
           <span className="material-symbols-outlined icon">book_5</span>
           <label className="card-title">{title}</label>
@@ -84,7 +88,9 @@ export default function Library({
         </div>
         <button
           onClick={deleteBook}
-          type="button"
+          type="submit"
+          //   onClick={deleteItem}
+
           className="material-symbols-outlined delete-button"
           value={trash}
         >

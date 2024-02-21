@@ -19,7 +19,8 @@ export default function Homescreen() {
   const [authObj, setAuthObj] = useState("");
   const [request, setRequest] = useState();
   const [response, setResponse] = useState([]);
-  const [id, setId] = useState()
+  const [id, setId] = useState();
+  const [deleteObj, setDeleteObj] = useState(false);
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
@@ -46,11 +47,11 @@ export default function Homescreen() {
       .then((data) => {
         console.log(data);
         setRequest(data);
-        setTitle("")
-        setDescription("")
-        setLocation("")
-        setQuantity("")
-        setPrice("")
+        setTitle("");
+        setDescription("");
+        setLocation("");
+        setQuantity("");
+        setPrice("");
       })
       .catch((error) => console.log(error));
   }
@@ -67,14 +68,30 @@ export default function Homescreen() {
         });
         console.log(booksArr);
         setResponse(booksArr);
-        setId(booksArr.book_id)
+        setId(booksArr.book_id);
       })
       .catch((error) => {
         console.log(error);
       });
   }
 
-  console.log(id)
+  // console.log(id);
+
+  function deleteBook(e) {
+    e.preventDefault();
+    axios({
+      url: `${process.env.REACT_APP_PORT}/${authObj}/${id}`,
+      method: "delete",
+      data: {
+        book_id: id,
+      },
+    })
+      .then((data) => {
+        console.log(data);
+        setDeleteObj(data.status === 200 ? true : false);
+      })
+      .catch((error) => console.log(error));
+  }
 
   useEffect(() => {
     if (!authObj) {
@@ -82,7 +99,7 @@ export default function Homescreen() {
     } else {
       getInventory();
     }
-  }, [request, authObj, id]);
+  }, [request, authObj, id, deleteObj]);
 
   return (
     <div className="grid-container">
@@ -149,7 +166,7 @@ export default function Homescreen() {
             className="entry_inputs number_input_right"
           />
         </div>
-        <button className="entry_button">Add Title</button>
+        <button className="entry_button" type="submit">Add Title</button>
       </form>
       <div>
         {response.map((item) => (
@@ -163,6 +180,7 @@ export default function Homescreen() {
               price={item.price}
               book_id={item.book_id}
               trash={item.book_id}
+              // deleteItem={deleteBook}
             />
           </div>
         ))}
