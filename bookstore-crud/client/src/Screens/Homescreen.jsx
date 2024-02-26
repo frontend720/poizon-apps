@@ -1,13 +1,26 @@
 import React, { useState, useEffect } from "react";
-import { onAuthStateChanged, getAuth } from "firebase/auth";
-import { getFirestore, collection, getDocs } from "firebase/firestore";
+import { onAuthStateChanged, getAuth, signOut } from "firebase/auth";
+import {
+  getFirestore,
+  collection,
+  getDocs,
+  query,
+  orderBy,
+} from "firebase/firestore";
 import { app } from "../config";
 import axios from "axios";
 import "./Homescreen.css";
 import Library from "./Library";
+import Edit from "./Edit";
 
-export default function Homescreen() {
+export default function Homescreen({bookid}) {
   const auth = getAuth(app);
+
+  function logOut(e) {
+    e.preventDefault();
+    signOut(auth);
+  }
+
   const db = getFirestore(app);
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
@@ -20,7 +33,7 @@ export default function Homescreen() {
   const [request, setRequest] = useState();
   const [response, setResponse] = useState([]);
   const [id, setId] = useState();
-  const [deleteObj, setDeleteObj] = useState(false);
+  const [modal, setModal] = useState(true);
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
@@ -52,6 +65,8 @@ export default function Homescreen() {
         setLocation("");
         setQuantity("");
         setPrice("");
+        setAuthor("");
+        setGenre("");
       })
       .catch((error) => console.log(error));
   }
@@ -75,22 +90,27 @@ export default function Homescreen() {
       });
   }
 
-  // console.log(id);
-
-  function deleteBook(e) {
+  function updateInventory(e) {
     e.preventDefault();
     axios({
-      url: `${process.env.REACT_APP_PORT}/${authObj}/${id}`,
-      method: "delete",
+      method: "put",
+      url: `${process.env.REACT_APP_PORT}/${authObj.toString()}/${bookid}`,
       data: {
-        book_id: id,
+        title: title,
+        author: author,
+        description: description,
+        genre: genre,
+        quantity: quantity,
+        price: price,
+        location: location,
       },
-    })
-      .then((data) => {
-        console.log(data);
-        setDeleteObj(data.status === 200 ? true : false);
-      })
-      .catch((error) => console.log(error));
+    });
+  }
+
+  console.log(`${process.env.REACT_APP_PORT}/${authObj.toString()}`);
+
+  function onEditButton() {
+    setModal((prev) => !prev);
   }
 
   useEffect(() => {
@@ -99,10 +119,14 @@ export default function Homescreen() {
     } else {
       getInventory();
     }
-  }, [request, authObj, id, deleteObj]);
+  }, [request, authObj, id]);
 
   return (
     <div className="grid-container">
+      <button onClick={logOut} className="leave_button">
+        <label htmlFor="">Leave</label>
+        <span class="material-symbols-outlined">snowshoeing</span>
+      </button>
       <form className="entry_form" onSubmit={addTitle} action="">
         <h1>Entry Form</h1>
         <input
@@ -166,11 +190,32 @@ export default function Homescreen() {
             className="entry_inputs number_input_right"
           />
         </div>
-        <button className="entry_button" type="submit">Add Title</button>
+        <button className="entry_button" type="submit">
+          Add Title
+        </button>
       </form>
       <div>
-        {response.map((item) => (
+        {/* {response.map((item) => (
+          ))} */}
+        {response.sort().map((item) => (
           <div key={item.u_isbn}>
+            <Edit
+              styleProps={modal ? { display: "block" } : { display: "none" }}
+              
+              title={title}
+              description={description}
+              genre={genre}
+              location={location}
+              price={price}
+              submit={updateInventory}
+              titleChange={(e) => setTitle(e.target.value)}
+              descriptionChange={(e) => setDescription(e.target.value)}
+              genreChange={(e) => setGenre(e.target.value)}
+              locationChange={(e) => setLocation(e.target.value)}
+              priceChange={(e) => setPrice(e.target.value)}
+              editTitleText={item.title}
+              editAuthorText={item.author}
+            />
             <Library
               title={item.title}
               description={item.description}
@@ -180,7 +225,7 @@ export default function Homescreen() {
               price={item.price}
               book_id={item.book_id}
               trash={item.book_id}
-              // deleteItem={deleteBook}
+              editButton={onEditButton}
             />
           </div>
         ))}

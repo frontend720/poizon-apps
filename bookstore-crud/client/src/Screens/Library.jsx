@@ -3,6 +3,7 @@ import { app } from "../config";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import "./Library.css";
 import axios from "axios";
+import Edit from "./Edit";
 
 export default function Library({
   title,
@@ -14,6 +15,7 @@ export default function Library({
   book_id,
   trash,
   deleteItem,
+  editButton
 }) {
   const [request, setRequest] = useState();
   const [authObj, setAuthObj] = useState();
@@ -86,6 +88,8 @@ export default function Library({
         <div style={{ width: "100%", margin: '12 "auto"' }}>
           <h2 className="barcode">{book_id}</h2>
         </div>
+        <div style={{display: "flex", justifyContent: "space-between"}}>
+
         <button
           onClick={deleteBook}
           type="submit"
@@ -96,6 +100,8 @@ export default function Library({
         >
           delete
         </button>
+        <button onClick={editButton}  className="material-symbols-outlined edit-button">edit</button>
+        </div>
       </div>
     </div>
   );
