@@ -13,7 +13,7 @@
   <body>
     <header>
       <img class="logo" src="./assets/logo.svg" alt="logo" />
-      <button type="submit" class="consultation-button footer-btn">
+      <button id="consultation" type="submit" onclick="ctaModal()" class="consultation-button footer-btn">
         Free Consulation
       </button>
     </header>
@@ -73,11 +73,12 @@
           designed everything from brand illustrations to complete mobile apps.
           I’m also handy with a camera!
         </p>
-        <button type="submit" class="consultation-button">
+        <button  onclick="ctaModal()"  type="button" id="consultation" class="consultation-button">
           Free Consultation
         </button>
       </div>
     </div>
+    <h2>My Work</h2>
     <div id="image-outer-carousel">
       <div id="image-inner-carousel">
         <img src="" alt="" class="carousel-image">
@@ -106,16 +107,17 @@
           </p>
         </div>
       </div>
-      <button type="submit" class="consultation-button cta-btn">
+      <button  onclick="ctaModal()" id="consultation"  type="submit" class="consultation-button cta-btn">
         Free Consulation
       </button>
     </footer>
     <div class="just-another-cta">
-      <img src="./assets/logo.svg" alt="" />
-      <button type="submit" class="consultation-button footer-btn">
+      <img class="logo" src="./assets/logo.svg" alt="" />
+      <button  onclick="ctaModal()" id="consultation" type="submit" class="consultation-button footer-btn">
         Free Consulation
       </button>
     </div>
+    <div class="modal" id="form"></div>
     <script src="main.js"></script>
   </body>
 </html>

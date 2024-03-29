@@ -1,0 +1,7 @@
+{
+  "name": "sunday-morning-social",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react-vite"
+}

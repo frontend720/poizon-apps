@@ -45,7 +45,7 @@ export default function Authentication() {
         if (!email && !password) {
           setError("User must enter email and password");
         } else {
-          console.log(user.providerId);
+          return user.providerId;
         }
       })
       .catch((error) => {
@@ -62,7 +62,7 @@ export default function Authentication() {
         if (!email && !password) {
           setError("User must enter email and password");
         } else {
-          console.log(user.providerId);
+          return user.providerId;
         }
       })
       .catch((error) => {
@@ -86,12 +86,13 @@ export default function Authentication() {
         onSubmit={authToggle ? signup : login}
         action=""
       >
+          <h1>Brawny AI</h1>
         <div className="flex">
           {/* <span className="material-symbols-outlined">mail</span> */}
           <input
             placeholder="email"
             className="auth_inputs"
-            type="text"
+            type="email"
             name="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
@@ -108,7 +109,7 @@ export default function Authentication() {
             onChange={(e) => setPassword(e.target.value)}
           />
 
-          <span onClick={visibilityToggle} style={{marginLeft: 6}} class="material-symbols-outlined">{isVisible ? "visibility_off" : "visibility"}</span>
+          <span onClick={visibilityToggle} style={{marginLeft: 6}} className="material-symbols-outlined">{isVisible ? "visibility_off" : "visibility"}</span>
         </div>
         {/* <label style={{textAlign: "center", color: "orangered"}} htmlFor="">{error ==  `auth/missing-password` || `auth/missing-email` ? "Email and Password must be provided" : ""}</label> */}
         <label style={{ textAlign: "center", color: "orangered" }} htmlFor="">

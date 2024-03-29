@@ -1,0 +1,21 @@
+.account_form{
+    background: #ffffffc4;
+    padding: 6px;
+    margin-top: 48px;
+    border-radius: 4px
+}
+.shoreling{
+    color: #fa7070b7
+}
+
+input:focus, textarea:focus{
+    outline: none
+}
+
+input::placeholder, textarea::placeholder{
+    color: #444444ce
+}
+
+ion-icon{
+    color: #444444
+}

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js" integrity="sha384-mZLF4UVrpi/QTWPA7BjNPEnkIfRFn4ZEO3Qt/HFklTJBj/gBOV8G3HcKn4NfQblz" crossorigin="anonymous"></script>
+</head>
+<body>
+    <h1>Scaffolding</h1>
+    <input id="message" type="text">
+    <button onclick="sendMessage()">send</button>
+    <h1 id="response"></h1>
+    <script>
+        const message = document.getElementById("message");
+
+        const socket = io("http://localhost:4500")
+        socket.on("connection")
+
+        socket.on("room", (data) => {
+            const messageArr = []
+            messageArr.push(data)
+            document.getElementById("response").innerHTML = messageArr
+        })
+
+        const sendMessage = () => {
+            const input = document.getElementById("message")
+            const response = input.value
+            const arr = []
+            socket.emit('room', response)
+            
+        }
+    </script>
+</body>
+</html>

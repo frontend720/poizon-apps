@@ -56,4 +56,12 @@ const InputContainer = styled.div`
     justify-content: space-between
 `
 
-export { Wrapper, Container, Heading, Form, Input, InputContainer, ScrollContainer };
+const Loadingbar = styled.div`
+    width: ${({width}) => width ? width : "100%" };
+    /* padding: 3px; */
+    background: ${({color}) => color ? color : "#444444"};
+    border-radius: 25px;
+    padding-left: 16px
+`
+
+export { Wrapper, Container, Heading, Form, Input, InputContainer, ScrollContainer, Loadingbar };

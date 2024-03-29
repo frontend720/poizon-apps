@@ -18,19 +18,25 @@ import { onAuthStateChanged, getAuth } from "firebase/auth";
 import app from "./config";
 import { setDoc, doc, getFirestore } from "firebase/firestore";
 
+import {gsap} from "gsap"
+import {Loadingbar} from "./Stylesheet"
 export default function Assistant() {
+
+  const bar = useRef(null);
   const contextDisclaimer =
     "Hey there! Just a friendly heads-up: our chat might get a bit tangled if we go back and forth a whole bunch of times. Think of it like a game of catch – after too many throws, I might drop the ball on keeping up with the convo. If we stray into no-go zones, I'll nudge us back on track. Let's keep this chat fun and within the guidelines! 😊👍";
 
   const [userId, setUserId] = useState();
   const [question, setQuestion] = useState("");
-  const [saveResponse, setSaveResponse] = React.useState("");
   const [context, setContext] = useState("");
   const [toggle, setToggle] = useState(true);
   const [searchToggle, setSearchToggle] = useState(true);
   const [questions, setQuestions] = useState([]);
   const [response, setResponse] = useState([]);
-  const [responses, setResponses] = useState([response]);
+  const [saveResponse, setSaveResponse] = React.useState(response);
+  const [isAnimating, setIsAnimating] = useState(false);
+  const [loadingBarWidth, setLoadingBarWidth] = useState(100);
+ 
   const [disclaimer, setDisclaimer] = useState(contextDisclaimer)
 
   const auth = getAuth(app);
@@ -42,22 +48,22 @@ export default function Assistant() {
     });
   }, []);
 
-  const messageLimit =
-    "Oh, snap! It looks like we've been chatting up a storm and I might be getting a wee bit tangled in our convo yarn. 😅 After a bunch of back-and-forths, I can start to drop the conversational ball. But fear not! If I start to sound like I'm talking in riddles, just give me a nudge and we'll steer this chat-ship back to clear waters.";
-  const usageError =
-    "I won't be able to assist with that. But don't worry, I'm here to help with plenty of other topics! Let's steer this ship back to the safe waters of our conversation policies, and we'll be smooth sailing again. How about we try a different question or topic within the guidelines? ";
+  useEffect(() => {
+    JSON.stringify(saveResponse)
+    localStorage.setItem("conversation", JSON.stringify(response.map((r) => r + question)));
+  }, [response])
 
   const chat = (e) => {
     e.preventDefault();
-    const botName = "DeAndre";
-    const tone = "friendly, expressive";
+    const botName = "Gage";
+    const tone = " expressive";
     const systime = moment().format("MMMM Do YYYY, h:mm a");
     
     const request = {
       method: "POST",
       url: `${process.env.REACT_APP_NGROK}/new`,
       data: {
-        prompt: response.map((r) => JSON.stringify(r)) +question,
+        prompt: response.map((r) => (r)) + question,
         bot_name: botName,
         tone,
         userId,
@@ -69,7 +75,6 @@ export default function Assistant() {
     
     axios(request)
       .then((res) => {
-        console.log(res.data); 
         const messageContent = res.data[0].message.content;     
         setResponse((prev) => [
           ...prev,
@@ -78,15 +83,15 @@ export default function Assistant() {
         ]);
         
         setQuestions((prev) => [...prev, question]);
-       setSaveResponse((prev) => [
+        setSaveResponse((prev) => [
         ...prev,
         question,
-        console.log(messageContent)
        ])
-        
         setToggle((prev) => !prev);
         setSearchToggle();
         setDisclaimer("");
+        setIsAnimating(prev => (!prev))
+        setLoadingBarWidth(0); //
         
         if (!res.data) {
           console.log("No data to save");
@@ -95,13 +100,13 @@ export default function Assistant() {
             save();
           }, 1000);
         }
+        return res.data
       })
       .catch((error) => {
         console.log(error.response);
-      });
-    
-    setResponses((prev) => [...prev, response]);
+      })
     setQuestion("");
+    setIsAnimating(true)
   };
 
   const save = () => {
@@ -109,7 +114,7 @@ export default function Assistant() {
       method: "POST",
       url: `${process.env.REACT_APP_NGROK}/save`,
       data: {
-        system: response,
+        system: response.map((r) => (r)) + question,
         user: question,
         accountId: userId,
         conversationId: uuidv4(),
@@ -117,22 +122,28 @@ export default function Assistant() {
     };
     axios(request)
       .then((res) => {
-        console.log(res.data);
+       return res.data;
       })
       .catch((error) => error.code);
   };
 
   const resetConversation = (e) => {
     e.preventDefault();
-    console.log(setResponse([]));
+    setResponse([])
     setQuestions([undefined]);
     setContext("");
     setDisclaimer(contextDisclaimer)
+    setToggle(prev => console.log(!prev))
+    localStorage.removeItem("conversation");
   };
 
   const keyboardToggle = () => {
     setSearchToggle((prev) => !prev);
   };
+
+  useEffect(() => {
+   localStorage.getItem("conversation")
+  }, [response])
 
   return (
     <div className="assistant_container">
@@ -163,7 +174,6 @@ export default function Assistant() {
             </Link>
             <div
               onClick={resetConversation}
-              // className="reset_container"
               style={{
                 width: "100% !important",
                 alignContent: "right",
@@ -177,7 +187,7 @@ export default function Assistant() {
             <span
             onClick={keyboardToggle}
               style={searchToggle ? { position: "absolute", bottom: 0, marginBottom: 52 } : {display: "none"}}
-              class="material-symbols-outlined"
+              className="material-symbols-outlined"
             >
               arrow_forward_ios
             </span>
@@ -196,7 +206,7 @@ export default function Assistant() {
               </span>
             </InputContainer>
             <p className="text" style={{ fontWeight: "300" }}>
-              {disclaimer}
+              {disclaimer}                 
             </p>
             <div style={{ paddingBottom: 150 }}>
               <div
@@ -208,7 +218,7 @@ export default function Assistant() {
                         display: "block",
                       }
                 }
-              >
+              >           
                 <div>
                   {response.map((data) => (
                     <Markdown
@@ -220,6 +230,7 @@ export default function Assistant() {
                     </Markdown>
                   ))}
                 </div>
+                  <div style={isAnimating ? {width: `100%`} : {display: "none"}} className="loading"></div>
                 <div className="flex_container"></div>
               </div>
             </div>        
@@ -236,7 +247,7 @@ export default function Assistant() {
                     maxRows="6"
                     onChange={(e) => setQuestion(e.target.value)}
                     className="textarea"
-                    
+                    placeholder="Ask me something."
                     autoFocus={true }
                   />
                   <>
@@ -254,7 +265,7 @@ export default function Assistant() {
                 style={
                   searchToggle ? { display: "none" } : { display: "block" }
                 }
-                class="material-symbols-outlined keyboard"
+                className="material-symbols-outlined keyboard"
               >
                 keyboard
               </span>

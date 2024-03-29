@@ -1,5 +1,10 @@
 @import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;500;700&display=swap");
 
+
+.logo{
+    border-radius: 8px;
+}
+
 header{
     width: 85%;
     margin: 32px auto;
@@ -114,11 +119,18 @@ header{
   grid-column: 5/7;
 }
 
+h2{
+    text-align: center;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    margin: 42px auto
+}
+
 #image-outer-carousel{
     width:85%;
     height:350px;
     overflow: hidden;
-    margin: 0px auto;
+    margin: 32px auto;
+    /* margin-bottom: 42px */
     /* margin-left: 0 */
 }
 
@@ -184,6 +196,8 @@ header{
   border-radius: 25px;
   border: 1px solid #eb7565;
   margin-top: 32px;
+  width: 200px;
+  cursor: pointer
 }
 
 .consultation-button:hover {
@@ -205,12 +219,12 @@ header{
 }
 
 .cta-btn {
-  width: 200px;
+  width: 300px !important;
 }
 
 .just-another-cta {
   display: flex;
-  width: 82%;
+  width: 84%;
   margin: 0px auto;
   justify-content: space-between;
   flex-direction: row;
@@ -224,6 +238,13 @@ header{
 
 .footer-btn:hover{
     background: #755CDE
+}
+
+.modal{
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1
 }
 
 

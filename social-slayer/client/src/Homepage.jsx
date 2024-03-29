@@ -50,7 +50,7 @@ export default function Homepage() {
       .catch((error) => error.code);
   }
 
-console.log(response)
+// console.log(response)
 
 function getPlaylistFromDeezer(){
   // e.preventDefault()

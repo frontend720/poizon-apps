@@ -1,0 +1,7 @@
+{
+  "name": "stories",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "custom"
+}

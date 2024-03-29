@@ -1,0 +1,11 @@
+{
+  "folders": [
+	{
+		"name": "portfolio-project",
+		"path": "."
+	}
+],
+  "settings": {
+    "liveServer.settings.multiRootWorkspaceName": "portfolio-project"
+  }
+}
